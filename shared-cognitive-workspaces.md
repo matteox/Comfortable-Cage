@@ -2,6 +2,9 @@
 
 *Part 1 of a nine-part series on AI reasoning architecture.*
 
+> "If I had asked people what they wanted, they would have said faster horses."
+> — Henry Ford (attributed)
+
 Most AI agent systems today are built like a small company: a "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each one hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way — and reproducing that structure anyway may be quietly capping what these systems can do. This post argues for a different shape: instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
 
 ## Beyond Specialization vs. Monolithization
@@ -51,6 +54,18 @@ This matters because the SDLC-shaped default is not an architectural choice we m
 This is how ingrained the pattern is: when single-agent coders like Devin fail, their failure mode is usually not capability but **legibility**. They produce working software but cannot easily be slotted into the existing organizational machinery. And so the response is usually to wrap them in role-shaped scaffolding, recreating exactly the partition that was limiting them.
 
 AI-native attempts — multi-agent debate, Tree of Thoughts, Constitutional AI, generative-agent simulations — all push in the same direction: persistent state, multiple perspectives, revision, no premature "done." They fight against role fragmentation because role fragmentation is information loss. Most of them are still being re-fitted back into role-shaped frameworks by teams who cannot evaluate them any other way.
+
+### This has happened before
+
+The shape is familiar from adjacent industries. Three documented patterns:
+
+**Intranets that mirrored organizational charts (late 1990s–2000s).** Companies built internal websites organized exactly like their hierarchies — department pages, sub-pages for each team, navigation mirroring the org structure. The projection was literal: the org chart was the artifact being copied onto a new medium. The missed value was cross-silo discovery — finding people, documents, and information across departmental boundaries. The intranet's actual capability was actively defeated by the structure being imposed on it.
+
+**Brochureware (mid-1990s).** Companies took their printed marketing brochures and put them online as PDFs or HTML replicas. The projection: "we have brochures, the internet is for information, put the brochures there." The missed value: two-way interaction, dynamic content, personalization, search, link-following — none of which a brochure could capture. *Brochureware* is now a recognized term used precisely to describe this failure mode.
+
+**Mobile web as "desktop but smaller" (2000s–early 2010s).** Companies shrunk their desktop websites for mobile screens — same navigation, same content hierarchy, same interaction patterns. The projection: "we have a website, mobile users want the same thing." The missed value: location, sensors, push notifications, camera, always-with-you context. Companies that built native mobile experiences eventually won for many use cases precisely because they recognized the structural difference rather than adapting the old structure.
+
+The pattern is consistent: a new medium arrives with capabilities the old structure does not have, the old structure gets copied onto it because copying is what institutions know how to do, and the medium's actual value is missed for years while the faster-horse version gets incrementally polished. There is no reason to believe AI is exempt.
 
 ### The uncomfortable part
 

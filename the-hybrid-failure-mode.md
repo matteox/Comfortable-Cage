@@ -135,6 +135,8 @@ The hybrid is the most likely path because it is the path of least resistance. M
 
 This is the worst outcome the strategic landscape offers — more complex than Path 1, with the same capability ceiling and worse debuggability. It is also the most likely outcome, because it requires the least discipline from the institutions that build these systems.
 
+Adjacent industries have hit the same pattern. The intranet failures of the late 1990s, the brochureware period of the mid-1990s, the mobile-as-desktop era of the 2000s — none of those paradigms were abandoned on principle. They were abandoned when the cost of maintaining the projection exceeded the cost of changing. There is no reason to expect AI to follow a different arc.
+
 The disciplines above are how to avoid that outcome. They are not sufficient. They are necessary. Most teams that try this path will not sustain them.
 
 That is the honest prediction. Part 5 is more constructive — it shows what the patterns actually look like in code, so at least the engineering choice is well-informed even when the institutional choice is wrong.
