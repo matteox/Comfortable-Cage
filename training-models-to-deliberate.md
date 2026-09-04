@@ -52,7 +52,7 @@ We do have some sources:
 
 The first two are limited in scale and domain. The third is circular if we want to train the underlying model — we are asking the model to provide its own training signal, which works only if the model is already capable of generating high-quality deliberation.
 
-The honest answer: we need either much better sources of human deliberation data, or breakthroughs in self-supervised process learning. Neither is imminent.
+Realistically, we need either much better sources of human deliberation data, or breakthroughs in self-supervised process learning. Neither is imminent.
 
 ## Evaluation: grading a reasoning process
 
@@ -105,10 +105,4 @@ If any of these land, Path 3 starts becoming a path practitioners can build on. 
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 2** — [Beyond the Org Chart](./beyond-the-org-chart.md) — the viable paths forward.
-- **Part 3** — Training Models to Deliberate (this post) — the research frontier.
-
-*Continue to [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md) — practical guidance on running Path 2 without letting observability reshape the internals.*
+*Previous: [Part 2 — Beyond the Org Chart](./beyond-the-org-chart.md) · Next: [Part 3.5 — LoRA as Deliberation Head](./lora-as-deliberation-head.md) (a near-term experiment scoped from this post) · or skip ahead to [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md)*

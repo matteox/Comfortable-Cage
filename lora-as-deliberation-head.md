@@ -4,7 +4,7 @@
 
 ---
 
-Part 3 ended on the honest assessment that Path 3 — training models natively for multi-perspective deliberation — is a 5–15 year horizon with several open research problems. Process-level loss functions. Deliberative training data. Process evaluation. Faithfulness verification. None of these is solved.
+Part 3 ended on a sober assessment: Path 3 — training models natively for multi-perspective deliberation — is a 5–15 year horizon with several open research problems. Process-level loss functions. Deliberative training data. Process evaluation. Faithfulness verification. None of these is solved.
 
 This post asks: what can we do *now*, with existing base models and parameter-efficient fine-tuning, that buys some of the same outcome? Not as a substitute for Path 3, but as a near-term experiment that either fails informatively or produces a usable intermediate capability.
 
@@ -41,7 +41,7 @@ The interesting result would be: base + LoRA matches base + heavy workspace-styl
 
 You can generate deliberative traces from frontier models, but this is partially circular. If the frontier model already deliberates well, you are distilling an existing capability into a LoRA. If it does not, you have nothing to distill.
 
-The honest framing: this approach does not exceed the source model's deliberation quality. It transfers that quality into a smaller, more efficient target model, or makes it accessible with less prompting. That is a real and useful capability shift. It is not Path 3. Path 3 is about training deliberation into models that don't yet have it. This is about extracting deliberation from models that do, into models that don't, with no forgetting of base capabilities.
+Framed plainly: this approach does not exceed the source model's deliberation quality. It transfers that quality into a smaller, more efficient target model, or makes it accessible with less prompting. That is a real and useful capability shift. It is not Path 3. Path 3 is about training deliberation into models that don't yet have it. This is about extracting deliberation from models that do, into models that don't, with no forgetting of base capabilities.
 
 There is also the distillation-of-biases problem. Whatever blind spots the source model has — its preferred framings, its blind confidence in some domains, its tendency to over-revise in others — get baked into the LoRA. This is the same problem any distillation approach has. Mitigations: diverse source models (multiple frontier models contributing traces), held-out evaluation that includes adversarial tasks, and careful attention to the source model's known failure modes.
 
@@ -103,15 +103,6 @@ What it does is give us a tractable intermediate: smaller models with deliberati
 
 ---
 
-## Series so far
+This is the first of four near-term experiments scoped from Part 3 (3.5–3.8). Each adds one architectural element to the last: LoRA on the base (this post), then a separate critic, then self-critique, then an orchestrator. They can be read individually or in sequence.
 
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 2** — [Beyond the Org Chart](./beyond-the-org-chart.md) — the viable paths forward.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 3.5** — LoRA as Deliberation Head (this post) — a near-term experiment scoped from Part 3.
-
-*Continue to [Part 3.6 — Process Reward Models During Decoding](./process-reward-models.md) — adding a critic model that guides generation step-by-step.*
-
-*Continue to [Part 3.7 — Inference-Time Constitutional AI](./inference-time-constitutional-ai.md) — using the base model as its own critic.*
-
-*Continue to [Part 3.8 — Learned Routing](./learned-routing.md) — a small orchestrator model that decides what to do and when.*
+*Previous: [Part 3 — Training Models to Deliberate](./training-models-to-deliberate.md) · Next: [Part 3.6 — Process Reward Models](./process-reward-models.md)*

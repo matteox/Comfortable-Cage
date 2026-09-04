@@ -84,22 +84,13 @@ This is the version of MoE that doesn't limit AI by imposing architectural parti
 
 ## What's tractable vs what's the moonshot
 
-**Tractable (now):**
-- Hard-coded routers that mimic learned routing (state machines over deliberation patterns). Not learned, but useful as a baseline.
-- Routing LoRAs for known task types (math → PRM-guided chain, ethics → multi-voice, code → critique-revise). Cheap to implement, easy to debug.
+What's buildable today is modest: hard-coded routers that mimic learned routing — state machines over deliberation patterns, not learned but useful as a baseline — and routing LoRAs for known task types (math routes to a PRM-guided chain, ethics to multi-voice, code to critique-revise). Both are cheap to implement and easy to debug.
 
-**Near-term (1–2 years):**
-- Learned routers trained on deliberative traces. Cheap to train once traces exist; main cost is trace collection.
-- Router evaluation: did the router's decisions lead to better deliberation than a baseline hand-coded structure? Requires the evaluation protocols from Part 3.
+The one-to-two-year horizon is where routing starts earning its name: routers actually trained on deliberative traces, cheap to train once the traces exist, with the main cost being trace collection; and router evaluation that asks whether the router's decisions led to better deliberation than a hand-coded baseline, which needs the evaluation protocols from Part 3.
 
-**Research-frontier (3–5 years):**
-- Routers that generalize across task types (no retraining for new domains)
-- Routers that learn from weaker signals (outcome-only, not process-level)
-- Hybrid token + LoRA routing that combines the efficiency of MoE with the flexibility of behavioral routing
+Three to five years out sits the research frontier — routers that generalize across task types without retraining, routers that learn from weaker outcome-only signals, and hybrid token-plus-LoRA routing that tries to combine MoE's efficiency with behavioral routing's flexibility.
 
-**Moonshot:**
-- Routers that discover new deliberation structures not present in training data
-- Self-improving routers where router decisions become training data for the next router
+The moonshot is routers that discover deliberation structures not present in their training data, and self-improving routers whose own decisions become training data for the next generation of router.
 
 ## What this implies for the series
 
@@ -115,17 +106,8 @@ If this works, the architectural shape that emerges looks like:
 
 This is a *behavioral* MoE, with composition, decomposition, and learned structure. It is not the architectural MoE that Part 1 critiqued. Whether it is meaningfully different — or just MoE with extra steps — depends on whether the flexibility gain justifies the efficiency cost.
 
-The honest answer: we don't know yet. The experiments haven't been run at scale. But the path is now clear, and the experiments are cheap enough to run that we should see results.
+We don't know yet. The experiments haven't been run at scale. But the path is now clear, and the experiments are cheap enough to run that we should see results.
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 3.5** — [LoRA as Deliberation Head](./lora-as-deliberation-head.md) — modifying the base model.
-- **Part 3.6** — [Process Reward Models](./process-reward-models.md) — adding a separate critic.
-- **Part 3.7** — [Inference-Time Constitutional AI](./inference-time-constitutional-ai.md) — using the base model as its own critic.
-- **Part 3.8** — Learned Routing (this post) — adding an orchestrator that decides what to do.
-
-*The 3.x sub-series is now complete. The next post in the main series is [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md), the practitioner-focused deep dive on Path 2.*
+*The 3.x sub-series is now complete. Previous: [Part 3.7 — Inference-Time Constitutional AI](./inference-time-constitutional-ai.md) · Next: [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md), the practitioner-focused deep dive on Path 2.*

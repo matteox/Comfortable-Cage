@@ -1,16 +1,24 @@
 # Persistent Shared Cognitive Workspaces
 
+*Part 1 of a nine-part series on AI reasoning architecture.*
+
+Most AI agent systems today are built like a small company: a "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each one hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way — and reproducing that structure anyway may be quietly capping what these systems can do. This post argues for a different shape: instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
+
 ## Beyond Specialization vs. Monolithization
 
 > "The interesting research direction isn't 'more specialized agents' or 'one giant agent.' It's something like persistent shared cognitive workspaces with truly interleaved reasoning — closer to chain-of-thought with multiple voices than to a software org."
 
-This document expands that thesis.
+This is the thesis the rest of this post expands on.
 
 ---
 
 ## How We Got Here: The Projection Stack
 
-The reason "specialized agents vs. one big agent" feels like the only available framing is that we are already drowning in human coordination primitives. Almost every architectural choice in current AI agent systems inherits a default that was designed for human teams. To see why that default exists, it helps to look at what each SDLC artifact was originally solving for.
+The reason "specialized agents vs. one big agent" feels like the only available framing is that we are already drowning in human coordination primitives. Almost every architectural choice in current AI agent systems inherits a default that was designed for human teams.
+
+> **The load-bearing claim of this series:** Every one of these is a **workaround for human limitations**. None of them are intrinsic to building software. They are scaffolding that exists because the workers are fallible, forgetful, distributed, and ego-driven. When we map these primitives onto AI systems, we are not porting a process — we are porting a set of patches for problems the AI does not have.
+
+To see why that default exists, it helps to look at what each SDLC artifact was originally solving for.
 
 | SDLC artifact | Why humans need it | Whether AI needs it |
 |---|---|---|
@@ -20,8 +28,6 @@ The reason "specialized agents vs. one big agent" feels like the only available 
 | Testing phase | Humans are bad at imagining failure modes | The model can adversarially probe its own output |
 | Documentation | Knowledge evaporates between humans | Generated as a byproduct, not a separate workstream |
 | Standups / syncs | Distributed humans drift out of alignment | Shared state is the default, not the exception |
-
-Every one of these is a **workaround for human limitations**. None of them are intrinsic to building software. They are scaffolding that exists because the workers are fallible, forgetful, distributed, and ego-driven. When we map these primitives onto AI systems, we are not porting a process — we are porting a set of patches for problems the AI does not have.
 
 ### The legibility trap
 
@@ -77,6 +83,24 @@ A specialist agent architecture partitions cognition: each mind has private stat
 A monolithic agent collapses cognition into one voice: no partition, but also no genuine perspective diversity.
 
 Neither has **shared cognition** — multiple perspectives operating on the same continuously-mutating representation.
+
+```
+Pole A: Partitioned              Pole B: Monolithic            Shared Cognition
+(specialist agents)              (single agent)                (the alternative)
+
+ [Architect] --spec--> [Impl]     ┌────────────────┐            ┌──────────────────┐
+      |                   |       │  one context,  │            │  shared mutable   │
+   lossy               lossy      │  one voice,     │            │  state, written   │
+  hand-off            hand-off    │  sequential     │            │  and revised by   │
+      v                   v       │  reasoning      │            │  every perspective│
+ [Tester] ---------> [Deploy]     └────────────────┘            │   ▲   ▲   ▲       │
+                                                                  │   │   │   │       │
+ cognition is split;              cognition is unified;          │  interleaved,      │
+ each hand-off discards           but no outside voice           │  revisable,        │
+ context the sender had           can challenge it                │  no premature      │
+                                                                  │  commitment        │
+                                                                  └──────────────────┘
+```
 
 ---
 
@@ -233,4 +257,4 @@ Shared cognitive workspaces are one sketch of what that looks like.
 
 *This is **Part 1** of a series on AI reasoning architecture.*
 
-*Continue to **Part 2** — [Beyond the Org Chart: Strategic Paths for AI Architecture](./beyond-the-org-chart.md) — for the viable paths forward given this diagnosis, and the honest prediction about which ones the field will actually pursue.*
+*Continue to **Part 2** — [Beyond the Org Chart: Strategic Paths for AI Architecture](./beyond-the-org-chart.md) — for the viable paths forward given this diagnosis, and a candid prediction about which ones the field will actually pursue.*

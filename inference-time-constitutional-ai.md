@@ -103,19 +103,16 @@ For deployment, the choice depends on volume and stakes. High volume, low stakes
 
 ## What's tractable vs what's the moonshot
 
-**Tractable (now):**
-- Inference-time constitutional AI loops for high-stakes decisions where 5–10× inference cost is justified
-- Principle libraries curated for specific domains (legal reasoning, medical advice, code review)
-- Combined systems using Part 5 patterns + constitutional critique for stronger signals
-
-**Research-frontier (2–5 years):**
-- Critique models that are *trained* to be more incisive at inference, even without modifying the base (a kind of "critique LoRA")
-- Automated principle discovery — letting the model propose principles rather than relying on human-curated ones
-- Faithfulness measurement at inference — detecting when critique-generated text doesn't match actual evaluation
-
-**Moonshot:**
-- Self-improving constitutional loops where the model's own critiques become training data for the next iteration
-- Critique models that genuinely diverge from the generator's biases (closer to the deliberation concept in Part 1)
+| Horizon | Direction |
+|---|---|
+| Tractable (now) | Inference-time constitutional loops for high-stakes decisions where 5–10× inference cost is justified |
+| Tractable (now) | Principle libraries curated for specific domains (legal reasoning, medical advice, code review) |
+| Tractable (now) | Combined systems using Part 5 patterns + constitutional critique for stronger signals |
+| Research-frontier (2–5 yrs) | Critique models *trained* to be more incisive at inference without modifying the base (a "critique LoRA") |
+| Research-frontier (2–5 yrs) | Automated principle discovery — the model proposes principles rather than relying on human-curated ones |
+| Research-frontier (2–5 yrs) | Faithfulness measurement at inference — detecting when critique-generated text doesn't match actual evaluation |
+| Moonshot | Self-improving constitutional loops where the model's own critiques become training data for the next iteration |
+| Moonshot | Critique models that genuinely diverge from the generator's biases (closer to the deliberation concept in Part 1) |
 
 ## What this implies
 
@@ -129,10 +126,4 @@ The next post explores that third option.
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 3.5** — [LoRA as Deliberation Head](./lora-as-deliberation-head.md) — modifying the base model.
-- **Part 3.6** — [Process Reward Models](./process-reward-models.md) — adding a separate critic model.
-- **Part 3.7** — Inference-Time Constitutional AI (this post) — using the base model as its own critic.
+*Previous: [Part 3.6 — Process Reward Models](./process-reward-models.md) · Next: [Part 3.8 — Learned Routing](./learned-routing.md)*

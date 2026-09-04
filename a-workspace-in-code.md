@@ -271,6 +271,14 @@ These patterns compose. A realistic production system might:
 3. Run **multi-voice** over the blackboard to refine the hypothesis, with perspectives challenging each other.
 4. Apply **adversarial critique** to the final synthesis as a sanity check.
 
+```
+Perspective-Stitched  ──>  Blackboard  ──>  Multi-Voice  ──>  Adversarial Critique
+ (parallel exploration,       (consolidate      (refine via         (final sanity
+  independent trajectories)    evidence for/      challenge and       check on the
+                                against into a     revision)           synthesis)
+                                shared hypothesis)
+```
+
 Each layer is doing something the others can't. The cost is high — but the result is reasoning that has been triangulated through genuinely different paths, with explicit evidence handling and an adversarial pass at the end.
 
 This is more work than a single linear CoT. It is also qualitatively different. Whether the difference is worth it depends on the stakes of the decision being made.
@@ -287,12 +295,6 @@ The code in this post is a starting point. The discipline of keeping it from dri
 
 ---
 
-## Series so far
+*Previous: [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md)*
 
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 2** — [Beyond the Org Chart](./beyond-the-org-chart.md) — the viable paths forward.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 4** — [The Hybrid Failure Mode](./the-hybrid-failure-mode.md) — running Path 2 in practice.
-- **Part 5** — A Workspace in Code (this post) — concrete prompt-engineering patterns.
-
-*End of series. The five posts together form a complete argument: from diagnosis to architectural alternative to strategic landscape to research frontier to practical implementation. Whether the field actually moves along these lines is the open question the series ends on.*
+*End of series. The full reading order is in the [README](./README.md). The posts together form a complete argument: from diagnosis to architectural alternative to strategic landscape to research frontier to practical implementation. Whether the field actually moves along these lines is the open question the series ends on.*

@@ -30,7 +30,7 @@ The ceiling is real, though. Partition is the bottleneck, and no optimization in
 
 ## Path 2 — The hybrid
 
-This is the one I think most organizations will actually land on, and probably the one most worth scrutinizing.
+This is the one most organizations will actually land on, and probably the one most worth scrutinizing.
 
 Run a workspace-style reasoning system underneath. Expose a role-shaped view at the surface for human oversight.
 
@@ -48,7 +48,7 @@ Move the workspace pattern from prompt engineering into model weights. Train mod
 
 This is the path that changes the default. If the base model *already* does interleaved reasoning with revision, the prompt-time architecture becomes much less load-bearing. The workspace stops being something we have to engineer. It becomes something the model does by nature.
 
-The honest state of the art: we do not know how to train for this yet. We do not have good loss functions for "good deliberation" rather than "good output." Training data for deliberative reasoning is scarce — most public corpora are monologic. Evaluation is hard, because grading a reasoning process is not the same as grading an answer.
+The current state of the art is unresolved: we do not know how to train for this yet. We do not have good loss functions for "good deliberation" rather than "good output." Training data for deliberative reasoning is scarce — most public corpora are monologic. Evaluation is hard, because grading a reasoning process is not the same as grading an answer.
 
 This is frontier-lab territory. The practitioners reading this cannot pursue it directly. But they should be paying attention, because if Path 3 succeeds it changes what is possible for everyone else.
 
@@ -58,7 +58,7 @@ The most ambitious path, and the one with the longest timeline. If SDLC-shaped s
 
 Concrete moves: regulatory frameworks that attach liability to the deploying organization rather than to the internal architecture of the system. Insurance products priced against outcome quality rather than process conformance. Standards bodies defining verification protocols focused on output properties — not on whether there was a review step.
 
-The honest constraint is the obvious one. Regulation moves on decadal timescales. Insurance markets form on multi-year timescales. Neither helps a team shipping a product next quarter. This is a foundational path, not a tactical one.
+The obvious constraint applies here too. Regulation moves on decadal timescales. Insurance markets form on multi-year timescales. Neither helps a team shipping a product next quarter. This is a foundational path, not a tactical one.
 
 But it is the path that, if it succeeded, removes the ceiling entirely. The other paths are bounded by what role-shaped accountability permits. Path 4 unbinds them.
 
@@ -68,7 +68,7 @@ Replace the org-chart vocabulary with composable primitives. Instead of roles li
 
 This is what some current agent frameworks are gesturing at without quite naming it. More flexible than SDLC roles. No commitment to a particular organizational shape.
 
-The honest limitation: this is still partition. The primitives are still specialized. It is a better Path 1, not a path to genuine workspace reasoning. Useful. Not transformative.
+The core limitation: this is still partition. The primitives are still specialized. It is a better Path 1, not a path to genuine workspace reasoning. Useful. Not transformative.
 
 ## Path 6 — Verifiable reasoning traces
 
@@ -109,11 +109,8 @@ That is itself a kind of trap. The systems are good enough to ship. They are not
 
 The deepest question this leaves on the table: what would it take to make the institutional pressure relax? Probably nothing less than a few high-profile failures of role-shaped systems in settings where a workspace would have caught the error. The field is unlikely to move on principle. It will move on catastrophe.
 
-That is an uncomfortable prediction to end on. But I think it is the honest one.
+That is an uncomfortable prediction to end on. It is, as far as we can tell, the honest one.
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement. Why human organizational shapes are being projected onto AI systems, what they cost, and what the alternative looks like.
-- **Part 2** — Beyond the Org Chart (this post) — given the diagnosis, the viable paths forward, and which ones are likely to be adopted.
+*Previous: [Part 1 — Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) · Next: [Part 3 — Training Models to Deliberate](./training-models-to-deliberate.md)*

@@ -16,7 +16,7 @@ At the surface, the system exposes a role-shaped view for human oversight. Outpu
 
 The intent: keep the architectural benefits of a workspace while satisfying the institutional need for legibility.
 
-The reality, in most teams that try this: the role-shaped view starts reshaping the underlying architecture within months. The reasons are predictable.
+The predicted failure mode — reasoning from how similar observability-vs-architecture tensions tend to play out, not from measured data on this specific pattern — is that the role-shaped view starts reshaping the underlying architecture within months. The mechanism is predictable even where the timeline isn't:
 
 ## The failure mode
 
@@ -111,13 +111,23 @@ The signals of failure, in order of severity:
 
 By the time you hit signal 4 or 5, the hybrid has degraded into Path 1 with extra complexity. Recovering requires a rebuild, not a tuning.
 
+```
+Hybrid (intended)                                          Path 1 (drifted)
+workspace internals,                                        role-shaped internals,
+role-shaped view          1        2        3        4   5  extra complexity,
+                     ──────────────────────────────────────>  same ceiling as Path 1
+                     traces    role talk   stakeholder   projection   roles become
+                     too clean  in review   reshapes      hardens     load-bearing
+                                             the system    into spec
+```
+
 ## When to give up
 
 The hybrid is not always the right path. Give up on it if:
 
 - Your stakeholders genuinely need role-shaped accountability for legal or regulatory reasons. Then Path 4 (liability reform, from Part 2) is your real path; the hybrid is a workaround pretending to be an architecture.
 - Your task is genuinely role-shaped — that is, the work actually decomposes into independent specialized contributions. For some tasks this is true. For most tasks that get framed this way, it isn't.
-- Your team cannot maintain the disciplines above. This is honest — most teams cannot, given the institutional pressures they operate under. In that case, Path 1 (accept the SDLC shape and optimize within it) is a more honest choice than a hybrid that drifts.
+- Your team cannot maintain the disciplines above. Say so plainly — most teams cannot, given the institutional pressures they operate under. In that case, Path 1 (accept the SDLC shape and optimize within it) is a more honest choice than a hybrid that drifts.
 
 ## The uncomfortable meta-point
 
@@ -131,11 +141,4 @@ That is the honest prediction. Part 5 is more constructive — it shows what the
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 2** — [Beyond the Org Chart](./beyond-the-org-chart.md) — the viable paths forward.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 4** — The Hybrid Failure Mode (this post) — running Path 2 in practice.
-
-*Continue to [Part 5 — A Workspace in Code](./a-workspace-in-code.md) — turning the Part 1 architectural patterns into concrete prompt-engineering implementations.*
+*Previous: [Part 3.8 — Learned Routing](./learned-routing.md) · Next: [Part 5 — A Workspace in Code](./a-workspace-in-code.md)*

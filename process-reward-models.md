@@ -96,9 +96,4 @@ That is what the next two posts cover.
 
 ---
 
-## Series so far
-
-- **Part 1** — [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) — the problem statement.
-- **Part 3** — [Training Models to Deliberate](./training-models-to-deliberate.md) — Path 3 research deep dive.
-- **Part 3.5** — [LoRA as Deliberation Head](./lora-as-deliberation-head.md) — modifying the base model.
-- **Part 3.6** — Process Reward Models During Decoding (this post) — adding a critic model.
+*Previous: [Part 3.5 — LoRA as Deliberation Head](./lora-as-deliberation-head.md) · Next: [Part 3.7 — Inference-Time Constitutional AI](./inference-time-constitutional-ai.md)*
