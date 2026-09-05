@@ -54,7 +54,7 @@ If this succeeds, Paths 2 and 3 become dramatically easier to adopt, because the
 
 **Evaluating systems:** reward revision of earlier decisions in light of later evidence. Measure information preserved across hand-off boundaries, not just outputs. Treat a single-framing monologue as a warning sign, not a sign of confidence.
 
-**Researching:** the interesting question is how to train for deliberation, not for outputs. Multi-agent debate works in narrow settings; find where it breaks. The 1980s blackboard architecture deserves a serious revival — the field has rediscovered most of it informally without naming it.
+**Researching:** the interesting question is how to train for deliberation, not for outputs. Multi-agent debate works in narrow settings; find where it breaks. The blackboard revival is already underway and benchmarked (see Part 1); the open problems are the ones it exposes — how shared state gets updated, authorized, and audited over long horizons, how to detect convergence, and how to make an interleaved trace legible to an auditor.
 
 **Influencing institutions:** every regulation requiring "a human in the loop" or "a documented review step" is implicitly requiring SDLC-shaped AI. Push for liability that attaches to outcomes.
 

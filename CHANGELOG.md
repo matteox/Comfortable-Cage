@@ -147,3 +147,59 @@ should be.
 - The three ASCII diagrams added in the earlier editing pass (Part 1's
   three-way cognition diagram, Part 4's drift diagram, Part 5's composition
   pipeline).
+
+## Update — evidence added
+
+The series argued from architectural intuition at a point where the
+evidence had caught up with it. Two changes bring it current:
+
+- **Part 1** gains a "What the evidence says" section citing the MAST
+  taxonomy (Cemri et al., 2025: 1,600+ traces, seven frameworks, fourteen
+  failure modes, ~42% specification/design, ~37% inter-agent misalignment,
+  ~21% verification) as measurement of the diagnosis, and the LLM blackboard
+  results (Han & Zhang 2025; Salemi et al. 2025, 13–57% relative
+  improvement over role-based baselines; 2026 work on state update and
+  audit) as benchmarking of the prescription. It closes by naming what the
+  evidence does *not* settle — the institutional "why" — as the series'
+  contribution.
+- **Part 2**'s research bullet no longer proposes a blackboard revival the
+  field "hasn't named." The revival is named and benchmarked; the bullet
+  now points at the open problems it exposes (state update and audit,
+  convergence detection, trace legibility).
+
+## Update — citations linked
+
+Every citation in the series now links to its source, so no reference is
+trusted more visibly than another. Part 1: Wei 2022, Wang 2022, Yao 2023,
+Besta 2023, Du 2023, Bai 2022, Shinn 2023, Park 2023, Wang 2023 (Voyager),
+Cemri 2025 (MAST), Han & Zhang 2025, Salemi 2025, PatchBoard 2026, and the
+deterministic-blackboard-pipelines paper (ACM DL). Part 3: Lightman 2023
+("Let's Verify Step by Step"), Math-Shepherd, OmegaPRM, weak-to-strong
+generalization. All arXiv IDs were verified against the papers.
+
+## Update — building on the evidence
+
+The cited papers each stop at a point the series is already standing on,
+and two of them stop by making the move the series warns against. Three
+additions turn that into a research posture rather than a rhetorical one:
+
+- **Part 3** gains a section, "The experiments the evidence now makes
+  possible," with six moves: run the Part 5 patterns through MAST's
+  published dataset and LLM-as-judge annotator with a falsifiable
+  prediction about the failure distribution; the voices-versus-roles
+  ablation on the same board (Han & Zhang's system still uses role-agents
+  with private spaces); an operational definition of convergence-based
+  termination to compare against decider/round-cap/vote; the untested
+  long-horizon regime, with the cleaner ablation as the early warning;
+  a stated disagreement with MAST's "standardized communication protocols"
+  recommendation as Path 1 in disguise; and two open questions the series
+  answers by name (PatchBoard's audit question; the deterministic-pipeline
+  paper's drift).
+- **Part 4** gains a paragraph citing the deterministic-blackboard-
+  pipelines paper as the first documented instance of the hybrid failure
+  mode in the research literature: shared state kept, opportunistic
+  scheduling replaced with a fixed pipeline to regain traceability.
+- **Leaving the Cage** (Prometheus) Layer 4 now names PatchBoard's open
+  question — how shared state is updated, authorized, and audited — as the
+  question that layer is answering, so the audit-trail-as-view is read as a
+  candidate answer rather than a property.

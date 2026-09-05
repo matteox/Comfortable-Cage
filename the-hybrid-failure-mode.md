@@ -26,6 +26,8 @@ The mechanism is simple: humans evaluate what they can see, not what is happenin
 
 This is not malicious. It is not stupidity. It is the natural incentive structure. The visible representation becomes the optimization target.
 
+It has already happened once in the research literature, which is worth knowing because the drift is otherwise easy to dismiss as an organizational anecdote. A 2026 paper on [deterministic blackboard pipelines](https://dl.acm.org/doi/10.1145/3816713.3818808) started from the classical blackboard — shared state, knowledge sources firing opportunistically as the board changes — and found the opportunistic firing produced execution that was emergent and hard to trace. Their fix was to replace the scheduler with a fixed pipeline: keep the shared state, give up the dynamism, get legibility back. The authors are candid that this is a simplification, and for their domain it may be the right trade. But notice the shape of it. The traceability requirement did not sit beside the architecture; it reached in and re-sequenced it. That is the mechanism above, running in a lab instead of a product team.
+
 ## Five disciplines to maintain the boundary
 
 The hybrid works only if the team actively defends the gap between the view and the underlying system. That requires sustained discipline. Five practices help.
