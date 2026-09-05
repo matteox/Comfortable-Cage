@@ -3,7 +3,9 @@
 *Part 1 of a nine-part series on AI reasoning architecture.*
 
 > "If I had asked people what they wanted, they would have said faster horses."
-> — Henry Ford (attributed)
+> — Henry Ford (attributed, almost certainly apocryphal)
+
+The earliest published version of this quote credited "a Detroit executive," not Ford; the famous-name version attached later and stuck. Hallucination has been with us considerably longer than the technology supposedly responsible for it.
 
 Most AI agent systems today are built like a small company: a "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each one hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way — and reproducing that structure anyway may be quietly capping what these systems can do. This post argues for a different shape: instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
 
