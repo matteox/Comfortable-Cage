@@ -2,10 +2,13 @@
 
 *Part 1 of a nine-part series on AI reasoning architecture.*
 
-> "If I had asked people what they wanted, they would have said faster horses."
-> — Henry Ford (No record of Ford actually saying that, sounded great 'though)
+> "If I had asked people what they wanted, they would have said faster horses." — Henry Ford 
 
-AI agent systems today are built like a small company: a "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each one hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way — and reproducing that structure anyway may be quietly capping what these systems can do. This post argues for a different shape: instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
+(No record of Ford actually saying that, sounded great 'though)
+
+AI agent systems today are built like a small company: a "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each one hands its output to the next. It feels natural because it's how people organize projects. 
+
+But AI doesn't have the reasons humans organize work that way — and reproducing that structure anyway may be quietly capping what these systems can do. This post argues for a different shape: instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
 
 
 ## How We Got Here: The Projection Stack
