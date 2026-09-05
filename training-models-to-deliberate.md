@@ -1,108 +1,96 @@
 # Training Models to Deliberate
 
-*Part 3 of a series on AI reasoning architecture. [Part 1](./shared-cognitive-workspaces.md) laid out the problem statement. [Part 2](./beyond-the-org-chart.md) mapped the strategic paths. Part 3 zooms into Path 3 — the one with the highest ceiling and the longest timeline.*
+*Part 3 of The Comfortable Cage. This is Path 3 from [Part 2](./beyond-the-org-chart.md) — the one with the highest ceiling and the longest timeline.*
 
 ---
 
-Part 2 listed six paths forward. Path 3 — training models natively for multi-perspective deliberation — was the one with the highest potential upside and the longest timeline. It is also the path where the most interesting research questions live, and the path most likely to be ignored until the easier paths stop working.
+Of the six paths, training models natively for multi-perspective deliberation has the most upside, the most interesting research questions, and the highest chance of being ignored until the easier paths stop working. This post lays out the problem once, then four near-term experiments that each buy some of the outcome without waiting for the full solution.
 
-This post is a closer look at what "training models to deliberate" actually means, what is missing from current approaches, and where the field needs to go.
+## What deliberation means here
 
-## What we mean by deliberation
+Not chain-of-thought — that is linear, single-voice reasoning with no perspective diversity. Not self-consistency — many samples and a vote, with the intermediate reasoning never shared. Deliberation, in the sense that matters, is multiple perspectives operating on shared state, each able to revise its own position in light of the others, none finishing before the rest have weighed in, and termination by convergence rather than completion.
 
-When we say a model should "deliberate," we mean something specific. Not just chain-of-thought — that is linear, single-voice reasoning with no genuine perspective diversity. Not just self-consistency — that is multiple samples with a final vote, but the intermediate reasoning is not shared.
+Multi-agent debate approximates it. Tree of Thoughts approaches it in narrow settings. Most LLM reasoning today does not do it natively. The claim of Path 3 is that models should do it by default, so the prompt-time architecture stops being the load-bearing element.
 
-Deliberation, in the sense that matters here, is:
+## Why current methods don't get there
 
-- Multiple perspectives operating on shared state
-- Each perspective able to revise its own position in light of others
-- No perspective "finishes" before the others have weighed in
-- Termination by quality threshold or convergence, not by completion
+RLHF rewards outputs human raters prefer. Constitutional AI rewards outputs that match principles. DPO and its variants reward outputs that match preference pairs. All of them have produced remarkable results, and none has produced a deliberative model, for a structural reason: they grade the answer, not the path to it. A model can reach a good answer through shallow heuristics, lucky sampling, or memorized patterns, and the training signal cannot tell that apart from careful reasoning.
 
-This is what multi-agent debate approximates. It is what Tree of Thoughts approaches in narrow settings. It is what most LLM reasoning today does *not* do natively.
+Training for deliberation means a loss function sensitive to the quality of the reasoning process itself. That opens three problems, none solved.
 
-The claim of Path 3 is that we should train models to do this by default — so that the prompt-time architecture is no longer the load-bearing element. The model arrives at workspace-style reasoning on its own, regardless of how it is prompted.
+**Loss functions for process quality.** The naive approach — humans grade reasoning traces — doesn't scale; traces are long, dense, and need expert judgment. More promising: train against the consistency of the final answer under different deliberation conditions (does the model give the same answer alone and under adversarial pressure? does it change its answer *only* when given legitimate counter-evidence?). Most promising and least developed: models trained to detect when their own chain has committed prematurely or missed an obvious objection, used as critics during training. The field knows what the loss should be sensitive to and does not yet know how to compute it.
 
-## The gap between current methods and what we need
+**Training data.** Nearly every corpus is monologic — text, books, code, all written by individuals holding single positions. Deliberative sources exist (structured debates, judicial opinions, peer review, some meeting transcripts) but are small and domain-bound. Generated data from models debating themselves is circular: it works only if the model can already deliberate well.
 
-Most current alignment work optimizes for output quality under a particular prompting regime. RLHF rewards outputs that human raters prefer. Constitutional AI rewards outputs that match a set of principles. DPO and its variants reward outputs that match preference pairs.
+**Evaluation.** Even a model trained to deliberate cannot easily be verified to deliberate *well*. Output metrics — accuracy, factuality, helpfulness — are imperfect but usable. There is no process equivalent for "considered the obvious counter-argument," "revised in light of legitimate evidence," "avoided premature convergence." Underneath all of it sits faithfulness: whether a reasoning trace reflects the model's actual computation or a post-hoc rationalization. Until that's solved, traces can't be trusted as either training signal or evaluation target.
 
-These methods have produced remarkable results. They have not produced deliberative models. The reason is structural: they grade the final answer, not the path to it. A model can produce a good answer through shallow heuristics, lucky sampling, or memorized patterns. The training signal does not distinguish between "this model reasoned carefully and arrived at the right answer" and "this model pattern-matched its way to a correct-looking answer."
+What's being attempted is components, not yet a paradigm. Process supervision — OpenAI's "Let's Verify Step by Step" — graded reasoning steps rather than answers and outperformed outcome supervision on math, though it grades steps, not deliberation. Constitutional AI uses principles to guide self-critique, a weak form of the adversarial pattern. Debate training rewards arguments that survive adversarial probing. Recursive reward modeling and weak-to-strong generalization explore adjacent ground. The risk is that these assemble into something that *looks* deliberative on benchmarks without being so, the way some RLHF'd models look aligned while being sycophantic.
 
-To train for deliberation, the loss function needs to be sensitive to the quality of the reasoning process itself. We do not currently know how to do this.
+Full deliberation-as-default is realistically a 5–15 year horizon. The four experiments below are what can be run now.
 
-## Loss functions for process quality
+## Four near-term experiments
 
-The naive approach: have humans grade reasoning traces. This has obvious scaling problems. Reasoning traces are long, dense, and require expert evaluation. Even with scalable oversight techniques — debate, recursive reward modeling, weak-to-strong generalization — the underlying signal is human judgment of process, which is expensive and inconsistent.
+Each adds one architectural element to the last: an adapter on the base model, then a separate critic, then the base model as its own critic, then an orchestrator that decides among them. None is a substitute for Path 3. Each either fails informatively or produces a usable intermediate capability.
 
-The more interesting approach: train against the consistency of the final answer under different deliberation conditions. If a model gives the same answer whether it deliberates alone or with adversarial perspectives, that is one signal. If a model changes its answer only when given legitimate counter-evidence, that is another. We can construct training signals from these properties without needing humans to grade the reasoning itself.
+### 1. A LoRA deliberation head
 
-The still-more-interesting approach: train models to evaluate their own reasoning. A model trained to detect when its own chain-of-thought has committed prematurely, or failed to consider an obvious counter-argument, can be used as a critic during training. The critic is itself a model, but it provides denser process-level signal than human raters can.
+LoRA freezes a base model's weights and learns a small low-rank perturbation — for a weight matrix *W*, a ΔW = *A·B* of rank 4 to 32, applied alongside the frozen *W*. Behavior becomes a switchable property: a 7B base with a 50MB adapter behaves differently from the same base without it, and adapters stack at inference.
 
-None of these is solved. The field is at the stage of "we know what the loss function should be sensitive to, we do not yet have a way to compute it."
+The experiment: run the [Part 5](./a-workspace-in-code.md) patterns on a frontier model that *can* deliberate when carefully prompted, collect the interleaved traces (perspectives, revisions, evidence integration, mid-reasoning reversals), filter them with a judge model, and train a rank-16 adapter on the result. With the adapter active, the base model should produce interleaved, revising reasoning natively, with much lighter scaffolding. Evaluate on three axes: deliberative quality, decisiveness (does it still commit when warranted?), and capability preservation on standard benchmarks. Compare against the base with heavy prompting, the base with none, and the frontier source.
 
-## Training data: where does it come from?
+Two caveats. First, this transfers deliberation from a model that has it into a model that doesn't; it cannot exceed the source model's quality, and it inherits the source's biases and blind spots. That's a real capability shift — smaller, cheaper, less prompting — but it is distillation, not Path 3. Second, a model trained only on deliberative traces learns *always* deliberate, and a model that always revises is worse than one that revises when appropriate. The training mix needs 30–50% decisive, single-pass traces, and the evaluation needs cases where the right answer is to commit without deliberating.
 
-Most training corpora are monologic. Internet text, books, articles, code — all written by individuals expressing single positions. Deliberative corpora are rare.
+There is an architectural side-effect worth noticing. Mixture-of-experts specializes by partitioning weights and routing between them. Composable adapters specialize by additive perturbation on shared base computation — soft, stackable, switchable, with no architectural partition. Whether that preserves MoE's efficiency is empirical, but it's a different answer to the question this series opened with.
 
-We do have some sources:
-- Transcripts of structured debates, judicial opinions, peer review
-- Multi-party dialogue datasets (some meeting transcripts, legal records)
-- Generated data from multi-agent systems (model debates with itself)
+### 2. A process reward model at decoding time
 
-The first two are limited in scale and domain. The third is circular if we want to train the underlying model — we are asking the model to provide its own training signal, which works only if the model is already capable of generating high-quality deliberation.
+Leave the base model alone. Train a separate scorer for the quality of individual reasoning steps and use it to guide generation. Process reward models were first used as a training signal; what's changed is that they're now good enough to use at inference.
 
-Realistically, we need either much better sources of human deliberation data, or breakthroughs in self-supervised process learning. Neither is imminent.
+The mechanisms, in rising cost: best-of-N sampling (generate N chains, keep the highest-scoring); PRM-weighted voting; beam search with PRM-guided expansion; and lookahead — generate forward a step or more, score the resulting state, back off if the score degrades. Lookahead is the interesting mode for deliberation: the PRM asks "is this line of reasoning going somewhere?" at each step, and generation backtracks when it isn't. That's a learned version of the adversarial self-critique pattern, with a trained critic instead of a prompted one.
 
-## Evaluation: grading a reasoning process
+A PRM trained on deliberative traces would reward interleaving, revision, and evidence integration, steering the base toward deliberative chains because they score higher. The model isn't *knowing* how to deliberate; it's being steered by an external scorer, and the behavior disappears when the scorer does. But the scorer is doing work the base model can't do reliably on its own.
 
-This may be the hardest problem. Even if we could train a model to deliberate, we cannot easily verify that it is deliberating well.
+The data need is the hard part. Standard PRMs are trained on step-correctness labels; Math-Shepherd and OmegaPRM reduce annotation cost with synthetic or self-generated labels. A *deliberative* PRM needs labels at a higher level — when is revising a position responsive versus vacillating, when is acknowledging uncertainty a virtue versus a failure to commit — which nobody is collecting yet.
 
-Output evaluation has standard metrics — accuracy, factuality, helpfulness, harm avoidance. These are imperfect but usable. Process evaluation has no equivalent. We do not have good metrics for:
+Limits: cost (best-of-10 is 10× inference; beam search of 5 over 20 steps is 100×), poor transfer across domains, evaluator bias inherited from whatever labeled the training data, and the base-model ceiling — a PRM improves *selection* among candidates, never generation itself. This will be deployed first where decisions are expensive enough to justify it: medical, legal, financial.
 
-- Whether a model considered an obvious counter-argument
-- Whether the model revised a position in light of legitimate evidence
-- Whether the model avoided premature convergence
-- Whether the model's reasoning trace is faithful to its actual decision process (a separate problem — models often generate post-hoc rationalizations that do not match their actual reasoning)
+### 3. Inference-time constitutional critique
 
-Some research groups are working on faithfulness — whether chain-of-thought reflects the model's actual computation. This is foundational but unsolved. Without it, we cannot trust reasoning traces as either training signal or evaluation target.
+What if the critic is the base model, prompted to evaluate its own draft against explicit principles? No training, no separate model — the inference-time variant of Constitutional AI, and the cheapest of the four.
 
-## What is actually being attempted
+The principles encode the deliberation requirements: *before committing to a position, consider the strongest objection to it; if evidence emerges that contradicts an earlier claim, revise the claim; acknowledge uncertainty when the evidence doesn't support confidence; cite the basis for each load-bearing claim.* Generate, critique against the principles, revise, repeat until the critique reports no violations or the iteration budget runs out. Cost is 2N+1 calls per output — seven for three revisions. Roughly 7× a single-shot response, far cheaper than a PRM setup.
 
-A non-exhaustive map of where research is pointing:
+The limits are the obvious ones for a model grading itself. Same-model bias: it won't reliably find flaws it wouldn't have produced. Gaming: vague principles are satisfied superficially — "consider alternatives" by mentioning that alternatives exist, "acknowledge uncertainty" by adding hedges without changing the claim — so the principles must be specific enough that shallow compliance is detectable, which costs context. Latency: the iterations are sequential.
 
-**Process supervision.** OpenAI's "Let's verify step by step" work graded individual reasoning steps rather than final answers. Found that process supervision outperformed outcome supervision on math problems. The closest large-scale attempt at process-level training, though it is still grading steps, not deliberation.
+### 4. A learned router
 
-**Constitutional AI and variants.** Anthropic's constitutional approach uses principles to guide self-critique. The model critiques and revises its own outputs against a constitution. Adversarial self-critique, a weak form of deliberation.
+The first three share a shape: a generator produces reasoning, and some evaluator shapes what gets produced. None addresses *structure* — which perspective to invoke when, when to switch from generation to critique, when to stop. Part 1 argued deliberation needs structure that emerges from the problem. Part 5 imposes structure via prompts. This experiment asks whether the structure can be learned.
 
-**Multi-agent debate training.** Some work is training models specifically to perform well in debate settings. The model is rewarded for producing arguments that survive adversarial probing. Still early, but promising.
+A router is a small model that takes the current deliberation state and decides the next action: which perspective (skeptic, generator, synthesizer, domain expert), which adapter to activate, whether to invoke a critic, whether to terminate. It's trained on traces of good deliberation with the signal "at this decision point, what action led to better deliberation?" — process supervision at the structural level. The gains over hard-coded patterns: structure that adapts to the task (a simple question gets a simple deliberation), conditional steps ("if uncertain, invoke the skeptic"), and non-obvious orderings a designer would miss.
 
-**Recursive reward modeling.** Models trained to evaluate other models, recursively. The hope is that the evaluator becomes a process-level critic that scales beyond human raters.
+Two routing granularities matter. Token-level routing is classical MoE — routers inside the model choosing weight partitions per token. Adapter-level routing chooses which LoRA is active for a whole step. Deliberation steps are coherent units, so the coarser granularity fits better; a hybrid layers the two.
 
-**Weak-to-strong generalization.** Recent OpenAI work training strong models to imitate weak models' processes, with the hope that the strong model improves on them. Adjacent to the deliberative question rather than directly addressing it, but exploring related ground.
+What's lost: interpretability (you can log which adapter fired, not why), robustness (learned routers fail unpredictably where hard-coded patterns fail legibly), and a new single point of failure — a bad router makes the deliberation bad even when every component is good. And the router needs the same deliberative traces the rest of this post can't find enough of.
 
-None of these is yet a deliberative training paradigm. They are components that might assemble into one. The risk is that they assemble into something that *looks* deliberative in benchmarks but isn't, the way that some RLHF'd models produce sycophantic outputs that look aligned without being so.
+## Horizons
 
-## Timeline and what to watch for
+| Horizon | What's realistic |
+|---|---|
+| Tractable now | Adapter-based deliberation heads distilled from frontier traces; PRMs for narrow domains with well-defined step quality (math, code, formal verification); best-of-N with PRM re-ranking for high-stakes decisions; inference-time constitutional loops where 5–10× cost is justified; hard-coded routers as a baseline |
+| Research frontier | PRMs and critics trained on deliberative-quality labels rather than correctness; general-purpose PRMs that transfer across domains; routers trained on deliberative traces; faithfulness measurement at inference |
+| Moonshot | Critics that improve generation rather than selection; self-improving loops where the model's own critiques and routing decisions become training data; critics that genuinely diverge from the generator's biases; routers that discover deliberation structures absent from their training data |
 
-Realistically, full deliberation-as-default is a 5–15 year horizon. The research infrastructure is being built, but the core problems — process-level loss functions, deliberative training data, process evaluation, faithfulness verification — are all open.
+## What to watch for
 
-What to watch for:
-- A credible demonstration that a model revises its position when given legitimate counter-evidence in a way a base model does not
-- Process supervision results that scale beyond narrow math domains
+- A credible demonstration that a model revises its position on legitimate counter-evidence in a way its base does not
+- Process supervision that scales beyond narrow math domains
 - Training paradigms that don't require human-labeled deliberation data
-- Faithfulness work that gives us a way to verify reasoning traces match actual computation
+- Faithfulness work that lets us verify a trace matches the computation
 
-If any of these land, Path 3 starts becoming a path practitioners can build on. Until they do, Path 3 remains frontier research with no clear shipping date.
+If any of these land, Path 3 becomes something practitioners can build on. Until then, the four experiments above are what's available, and they are cheap enough to produce results in months.
 
-## What this implies
-
-**For frontier labs:** this is the path to invest in, even if it doesn't ship for years. The other paths buy incremental improvement. This one changes what is possible. The cost is tolerating long timelines with no immediate product wins, which is structurally hard for labs under commercial pressure.
-
-**For practitioners:** don't wait for Path 3. The other paths are what you can build today. But do follow the research — when Path 3 lands, it changes the capability ceiling for everyone.
-
-**For the field as a whole:** the biggest risk is that Path 3 doesn't arrive, and we have optimized Path 2 into a role-shaped system that performs like Path 1 with extra complexity. That would be a bad equilibrium — extra engineering cost, same capability ceiling, harder to debug. The defense against it is keeping the deliberative research funded even when the immediate shipping pressure points elsewhere.
+The risk worth naming: that Path 3 never arrives, and the field optimizes the hybrid into a role-shaped system that performs like Path 1 with extra complexity. The defense is keeping deliberative research funded while the shipping pressure points elsewhere. The next post is about the other half of that defense — running the hybrid without letting it drift.
 
 ---
 
-*Previous: [Part 2 — Beyond the Org Chart](./beyond-the-org-chart.md) · Next: [Part 3.5 — LoRA as Deliberation Head](./lora-as-deliberation-head.md) (a near-term experiment scoped from this post) · or skip ahead to [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md)*
+*Previous: [Part 2 — Beyond the Org Chart](./beyond-the-org-chart.md) · Next: [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md)*

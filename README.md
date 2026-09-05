@@ -1,39 +1,27 @@
 # The Comfortable Cage
 
-A nine-part blog series on AI reasoning architecture and the human organizational shapes we project onto it.
+A five-part series on AI reasoning architecture — and why multi-agent systems keep getting built like org charts.
 
 ## The thesis
 
-We are limiting AI — not by what we build, but by how we organize what we build. Most multi-agent AI systems today are organized into roles the way human teams are organized into roles: hand-offs, sign-offs, separate specialists with partitioned contexts.
+Most AI agent systems are shaped like a small software company: a planner hands off to a coder, who hands off to a reviewer. That shape is not a discovery about how AI reasons best. It is a set of workarounds for human limitations — forgetting, fatigue, ego, distributed teams drifting out of alignment — ported onto a worker that doesn't have them. We keep reaching for it anyway, because role-shaped systems are what institutions know how to defend. The org chart is the artifact of liability allocation, and we are reproducing it in silicon.
 
-These shapes were designed for workers with payroll, ego, and eight-hour attention limits. AI systems have none of those constraints. We copy the structure anyway — not because it produces better AI, but because the org has to be able to defend the AI to itself.
-
-This series argues that the alternative requires rethinking both architecture (workspace-style reasoning) and institutions (training, evaluation, accountability) at the same time.
+The alternative is a persistent shared cognitive workspace: multiple perspectives reading from and writing to one continuously shared state, interleaving and revising, terminating on convergence rather than on "all roles done." Closer to chain-of-thought with multiple voices than to a software org.
 
 ## Reading order
 
-The series is meant to be read in order. Each post builds on previous ones; by the end you'll be reading code that depends on concepts introduced in Part 1.
-
 | # | Post | What it covers |
 |---|---|---|
-| 1 | [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) | The problem statement. Why org charts get projected onto AI, what it costs, and what the alternative looks like. |
-| 2 | [Beyond the Org Chart](./beyond-the-org-chart.md) | Given the diagnosis, the six viable paths forward. |
-| 3 | [Training Models to Deliberate](./training-models-to-deliberate.md) | Path 3 research deep dive — the moonshot. What "training models to deliberate" actually requires. |
-| 3.5 | [LoRA as Deliberation Head](./lora-as-deliberation-head.md) | A near-term experiment scoped from Part 3. Cheap, tractable, might fail informatively. |
-| 3.6 | [Process Reward Models](./process-reward-models.md) | Add a critic model that guides generation step by step. |
-| 3.7 | [Inference-Time Constitutional AI](./inference-time-constitutional-ai.md) | Use the base model as its own critic, prompted by principles. |
-| 3.8 | [Learned Routing](./learned-routing.md) | A small orchestrator that decides what to do and when. |
-| 4 | [The Hybrid Failure Mode](./the-hybrid-failure-mode.md) | The most likely adoption path — workspace reasoning internally, role-shaped observability externally — and how it tends to degrade. |
-| 5 | [A Workspace in Code](./a-workspace-in-code.md) | Concrete prompt-engineering implementations of the Part 1 patterns. The most hands-on post. |
-
-Posts 3.5–3.8 form a sub-series on near-term experiments. Each one adds an architectural element to the previous (LoRA on the base, then a separate critic, then self-critique, then an orchestrator). Read individually or in sequence — they reinforce each other.
+| 1 | [Persistent Shared Cognitive Workspaces](./shared-cognitive-workspaces.md) | The diagnosis. Why organizational shapes get projected onto AI reasoning, what it costs, the four patterns that don't, and the research that already points this way. |
+| 2 | [Beyond the Org Chart](./beyond-the-org-chart.md) | The strategic landscape. Six paths forward, who would adopt each, and a prediction about which one the field will actually take. |
+| 3 | [Training Models to Deliberate](./training-models-to-deliberate.md) | The research frontier. Why current training methods don't produce deliberative models, the three open problems, and four near-term experiments — adapters, process reward models, inference-time constitutional critique, learned routing. |
+| 4 | [The Hybrid Failure Mode](./the-hybrid-failure-mode.md) | Practice. How to run a workspace with role-shaped observability without letting the observability reshape the architecture. Five drift signals, five disciplines, when to give up. |
+| 5 | [A Workspace in Code](./a-workspace-in-code.md) | Implementation. The four patterns as concrete prompt-engineering code, how to choose among them, and how they compose. |
 
 ## The argument in one paragraph
 
-The current trajectory of multi-agent AI is impressive and constrained. The systems are good enough to ship but not good enough to reveal what they could be. We know how to do better architecturally — shared reasoning, no hand-offs, interleaved perspectives — but we keep reaching for role-shaped systems because role shapes are what existing institutions can defend. The path forward is concrete: better training objectives, new evaluation criteria, near-term experiments in LoRA-based behavioral modulation, critic models, learned routing, and accountability frameworks that focus on outcomes rather than process. The series walks through the problem, the strategic landscape, the research frontier, and the implementations — ending on the question of whether the field will move on principle or on catastrophe.
+The current trajectory of multi-agent AI is impressive and constrained. The systems are good enough to ship and not good enough to reveal what they could be. We know how to do better architecturally — shared reasoning, no hand-offs, interleaved perspectives — but we keep reaching for role-shaped systems because role shapes are what existing institutions can defend. The path forward is concrete: better training objectives, new evaluation criteria, near-term experiments in behavioral adapters, critic models, and learned routing, and accountability frameworks that focus on outcomes rather than process. The series walks the problem, the strategic landscape, the research frontier, the practice, and the code — ending on the question of whether the field will move on principle or on catastrophe.
 
 ## Companion series
 
-This series is one half of a two-part argument. The companion series — **[Prometheus](https://github.com/matteox/Prometheus)** — makes the parallel case at the tool layer: the same human-cognition-shaped projections happen with the software tools (databases, email, ticket systems, Git, languages, etc.) that AI development workflows are built on. Where this series argues that org charts are the artifact of liability allocation, Prometheus argues that tool stacks are the artifact of human accountability. Where this series proposes workspace reasoning as one sketch of escape, Prometheus proposes *serve the work, not the worker's cognition* as the design principle.
-
-Two series, one trap, two sketches of escape. Read together they describe the full institutional machinery humans use to defend AI's outputs to themselves — and both the organizational shapes (this series) and the tool shapes (Prometheus) that limit what AI can do.
+[Prometheus](https://github.com/matteox/Prometheus) makes the parallel argument one layer down, at the tools: databases, email, sprints, code review, Git, the engineering ladder, and the abstractions beneath them are human-cognition-shaped in the same way, for the same reasons. Two series, one trap, two sketches of escape.

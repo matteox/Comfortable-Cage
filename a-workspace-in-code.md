@@ -1,6 +1,6 @@
 # A Workspace in Code
 
-*Part 5 of a series on AI reasoning architecture. [Part 1](./shared-cognitive-workspaces.md) — the problem statement. [Part 2](./beyond-the-org-chart.md) — the strategic paths. [Part 3](./training-models-to-deliberate.md) — Path 3 research deep dive. [Part 4](./the-hybrid-failure-mode.md) — Path 2 in practice. Part 5 turns the Part 1 architecture into concrete prompt-engineering patterns.*
+*Part 5 of The Comfortable Cage. The four patterns are introduced in [Part 1](./shared-cognitive-workspaces.md); this post shows each one in code.*
 
 ---
 
