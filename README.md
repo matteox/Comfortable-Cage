@@ -31,3 +31,9 @@ Posts 3.5–3.8 form a sub-series on near-term experiments. Each one adds an arc
 ## The argument in one paragraph
 
 The current trajectory of multi-agent AI is impressive and constrained. The systems are good enough to ship but not good enough to reveal what they could be. We know how to do better architecturally — shared reasoning, no hand-offs, interleaved perspectives — but we keep reaching for role-shaped systems because role shapes are what existing institutions can defend. The path forward is concrete: better training objectives, new evaluation criteria, near-term experiments in LoRA-based behavioral modulation, critic models, learned routing, and accountability frameworks that focus on outcomes rather than process. The series walks through the problem, the strategic landscape, the research frontier, and the implementations — ending on the question of whether the field will move on principle or on catastrophe.
+
+## Companion series
+
+This series is one half of a two-part argument. The companion series — **[Prometheus](https://github.com/matteox/Prometheus)** — makes the parallel case at the tool layer: the same human-cognition-shaped projections happen with the software tools (databases, email, ticket systems, Git, languages, etc.) that AI development workflows are built on. Where this series argues that org charts are the artifact of liability allocation, Prometheus argues that tool stacks are the artifact of human accountability. Where this series proposes workspace reasoning as one sketch of escape, Prometheus proposes *serve the work, not the worker's cognition* as the design principle.
+
+Two series, one trap, two sketches of escape. Read together they describe the full institutional machinery humans use to defend AI's outputs to themselves — and both the organizational shapes (this series) and the tool shapes (Prometheus) that limit what AI can do.
