@@ -297,4 +297,4 @@ The code in this post is a starting point. The discipline of keeping it from dri
 
 *Previous: [Part 4 — The Hybrid Failure Mode](./the-hybrid-failure-mode.md)*
 
-*End of series. The full reading order is in the [README](./README.md). The posts together form a complete argument: from diagnosis to architectural alternative to strategic landscape to research frontier to practical implementation. Whether the field actually moves along these lines is the open question the series ends on.*
+*End of this series. The full reading order is in the [README](./README.md). The constructive close for both series — what an AI-first architecture looks like when the reasoning layer and the tool layer are redesigned together — is [Leaving the Cage](https://github.com/matteox/Prometheus/blob/main/leaving-the-cage.md). The posts together form a complete argument: from diagnosis to architectural alternative to strategic landscape to research frontier to practical implementation. Whether the field actually moves along these lines is the open question the series ends on.*

@@ -24,4 +24,4 @@ The current trajectory of multi-agent AI is impressive and constrained. The syst
 
 ## Companion series
 
-[Prometheus](https://github.com/matteox/Prometheus) makes the parallel argument one layer down, at the tools: databases, email, sprints, code review, Git, the engineering ladder, and the abstractions beneath them are human-cognition-shaped in the same way, for the same reasons. Two series, one trap, two sketches of escape.
+[Prometheus](https://github.com/matteox/Prometheus) makes the parallel argument one layer down, at the tools: databases, email, sprints, code review, Git, the engineering ladder, and the abstractions beneath them are human-cognition-shaped in the same way, for the same reasons. The two series close together in [Leaving the Cage](https://github.com/matteox/Prometheus/blob/main/leaving-the-cage.md), which assembles both diagnoses into a concrete AI-first architecture.
