@@ -8,7 +8,7 @@ The trap is institutional, not technical. So what do we do about it?
 
 There are seven viable paths. They differ in time horizon, in who would actually adopt them, and in what they require the field to give up. None is comfortable. The most likely outcome is a hybrid that captures some of the upside and most of the failure mode.
 
-Part 1 named six reasons the org chart survives its own origin. The useful way to read the paths below is against that list, because each path treats one reason and none treats more than one:
+Part 1 named six reasons the org chart survives its own origin. The useful way to read the paths below is against that list, because each path treats one reason, or at most a pair that share a cure, and no path treats them all:
 
 | Reason it persists | The path that treats it |
 |---|---|

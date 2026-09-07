@@ -27,14 +27,14 @@ The reason "specialists versus one big agent" feels like the only framing availa
 
 | SDLC artifact | Why humans need it | Whether AI needs it |
 |---|---|---|
-| Requirements doc | Humans forget, mishear, disagree on scope | Holds everything in context |
-| Architecture phase | Humans can't design and code simultaneously | No cognitive bottleneck to phase around |
-| Code review | Humans miss bugs in their own work; ego blocks self-critique | Self-critique is what chain-of-thought already does |
-| Testing phase | Humans are bad at imagining failure modes | Can adversarially probe its own output |
-| Documentation | Knowledge evaporates between humans | Generated as a byproduct, not a separate workstream |
-| Standups / syncs | Distributed humans drift out of alignment | Shared state is the default, not the exception |
+| Requirements doc | Humans forget, mishear, disagree on scope; people who can't all be in the room have to agree once, in writing | One shared state every voice reads directly; the document becomes a view of it |
+| Architecture phase | Humans can't design and code at the same time, and can't all be consulted at once | No cognitive bottleneck to phase around; design and implementation revise each other on the same board |
+| Code review | Humans miss bugs in their own work; a second reader brings independent eyes | The independent reader survives — a different model, not a person with less context. The ceremony around it does not |
+| Testing phase | Humans are bad at imagining failure modes, and can't test while they build | Adversarial probing runs during generation, not after — with the same independence caveat as review |
+| Documentation | Knowledge evaporates between humans | Rendered as a view of structured state, not written as a separate workstream |
+| Standups / syncs | Distributed humans drift out of alignment between the moments they can talk | Shared state is the default; a wall remains only where it buys independent error |
 
-Every one of these is a workaround for a human limitation, and more precisely a rationing scheme: each one decides who has to know what, given that knowing costs somebody an hour. None is intrinsic to building software. When we map them onto AI systems we are not porting a process; we are porting a set of patches for problems the AI doesn't have.
+Every one of these is a workaround for a human limitation. Most are, more precisely, rationing schemes: each decides who has to know what, given that knowing costs somebody an hour. Two of them — review and testing — ration something else, an independent second look, and the argument comes back to that difference below, because it is the one that survives. None is intrinsic to building software. When we map them onto AI systems we are not porting a process; we are porting a set of patches for problems the AI mostly doesn't have.
 
 Faster horses, all the way down.
 
@@ -42,10 +42,10 @@ Faster horses, all the way down.
 
 The org chart was a real solution to a real constraint. A person can be in one
 place at a time, interruption is expensive, and asking a busy colleague a
-question is never free. Read the middle column of the table above again: every
-row is an attention limit. Roles, hand-offs, summaries, review gates, standups,
-seniority — each one decides who has to know what, given that knowing costs
-somebody an hour. Where attention is the scarce thing, rationing it is correct.
+question is never free. Read the middle column of the table above again: all
+but two rows are attention limits. Roles, hand-offs, summaries, standups, seniority —
+each one decides who has to know what, given that knowing costs somebody an
+hour. Where attention is the scarce thing, rationing it is correct.
 
 The question is what happens when you carry the answer somewhere the problem
 doesn't exist.
@@ -75,15 +75,19 @@ cut, and one of them is still being made because the other used to be necessary.
 The sub-agent pattern is where this is easiest to see. A sub-agent works with
 rich context and returns a paragraph to the orchestrator. That is a status
 report. It exists in organisations because a director cannot read every diff.
-Here the orchestrator could have read all of it. The summary is lossy
-serialisation performed out of habit — the compression outliving the thing it
-was compressing for.
+Here the orchestrator could have read all of it. Compression as such is not
+the mistake — context is scarce, and something has to be left out. The mistake
+is who decides. The sub-agent chose in advance what its reader would need,
+which is ownership; the reader could have selected from the whole record what
+this question needed, which is relevance. The summary is the wrong cut, made by
+the wrong party, at the wrong time — the compression outliving the thing it was
+compressing for.
 
 ### An aside on mixture-of-experts
 
-One tempting misreading is worth heading off. Mixture-of-experts looks like the org chart made architecture: dedicated experts, a router sending each question to the right specialist, nobody bothering anyone else while they work. If that were what MoE is, it would be evidence that partition is natural after all.
+An objection arrives at this point from anyone who has read a model card: the models themselves partition. Mixture-of-experts looks like the org chart made architecture: dedicated experts, a router sending each question to the right specialist, nobody bothering anyone else while they work. If that were what MoE is, it would be evidence that partition is natural after all.
 
-It isn't. MoE routing is sparse activation for FLOPs economy — a way to grow parameters without growing compute per token. That scarcity is real and it is arithmetic, not politeness. But the experts are not domain specialists. Routing is largely per-token and driven by learned features that turn out to be substantially positional and syntactic; interpretability work keeps failing to find the legal expert or the SQL expert people expect to be in there. The experts specialise in something, and it is mostly not the thing the name suggests.
+It isn't. MoE routing is sparse activation for FLOPs economy — a way to grow parameters without growing compute per token. That scarcity is real and it is arithmetic, not politeness. But the experts are not domain specialists. Routing is largely per-token and driven by learned features that turn out to be substantially positional and syntactic; the interpretability work so far has not found the legal expert or the SQL expert people expect to be in there. The experts specialise in something, and it is mostly not the thing the name suggests.
 
 Which makes MoE an example of the pattern rather than a counterexample. The mechanism is a compute-allocation trick. The org chart is what we read into it: we named the components *experts*, inferred that each one owns a domain, and then built agent systems in the image of the metaphor rather than the mechanism. [Part 3](./training-models-to-deliberate.md) takes this up on the engineering side — composable adapters get similar specialisation by additive perturbation on shared computation, with no partition at all.
 
@@ -100,6 +104,8 @@ So the rule is not *everyone sees everything*. It is narrower:
 > Keep the walls that buy independent error. Demolish the ones that only bought scheduling.
 
 Almost every wall in the SDLC is the second kind.
+
+This is the bet the series is making, and it should be stated as one. Shared cognition is the claim; correlated error is its price; the wager is that a blind first round, late syncs, and one uncorrelated critic keep the price low enough that the gains from never handing anything off survive. If they don't — if independence turns out to cost more context than the board can spare — the architecture that wins is a mixed-model workspace, and the cost argument in this series gets harder. [Part 3](./training-models-to-deliberate.md) says how to find out.
 
 ## Why the cage is comfortable
 
@@ -148,7 +154,7 @@ This is the cheapest of the six to fix and the least often noticed. Choose tools
 
 ### 5. The person-metaphor — "agent" is a person-word
 
-We have no vocabulary for coordinating non-human minds, so we borrowed the one for coordinating people. The borrowing is not neutral. Once the unit is an *agent* it wants a *role*; once it has a role it wants a *responsibility*; a responsibility wants a *boundary*. Four words later the architecture is decided, and no one made a decision.
+We have no vocabulary for coordinating non-human minds, so we borrowed the one for coordinating people. The borrowing is not neutral. Once the unit is an *agent* it wants a *role*; once it has a role it wants a *responsibility*; a responsibility wants a *boundary*. Four words later the architecture is decided. The word was chosen; nothing after it was.
 
 What makes this one durable is that it has real evidence behind it, applied at the wrong layer. Persona prompting works. Telling a model to answer as a skeptical security reviewer produces different and often better output than asking neutrally, and every practitioner has seen it work. That is a fact about conditioning a distribution inside one context. It is not evidence that the *system* should be split into security-reviewer-shaped components with their own contexts and hand-offs between them. The first is prompt engineering and it pays for itself. The second is architecture and it costs. Conflating them is the most common form of the mistake this series is about, and the hardest to argue with, because the person making it can point at a result that is genuinely there.
 
@@ -172,7 +178,7 @@ It also has the clearest exit, because debuggability is a rendering problem, and
 | The person-metaphor | Prompt-level gains, misapplied at the system level | At the prompt yes, at the architecture no | Part 3, Part 5 |
 | The readable trace | Real debuggability | The need does; the architecture doesn't | Part 4 |
 
-Three of the six buy something real: oversight, accountability, debuggability. None of the three requires the architecture we currently pay for it with. The other three are not trades at all — they are the shape arriving by default, out of the org that built the system, the framework it was built on, and the words used to describe it.
+Three of the six buy something real: oversight, accountability, debuggability. None of the three requires the architecture we currently pay for it with. The other three are barely trades. The primitive buys convenience and nothing else; Conway's law and the metaphor buy nothing at all. They are the shape arriving by default, out of the org that built the system, the framework it was built on, and the words used to describe it — and two of them, the org and the framework, were never chosen by anyone.
 
 That is what makes the cage comfortable rather than merely wrong. Most of it was never chosen.
 
@@ -210,7 +216,7 @@ Five properties:
 
 1. **Shared mutable state.** Every participant reads and writes the same representation. No private contexts, no hand-offs that compress information — with the one exception carved out above: a first position formed before the board is read, so that each voice brings something independent to it.
 2. **No premature commitment.** No perspective "finishes" before others can intervene. A draft architecture can be revised after the implementation perspective has spoken, because the implementation perspective is part of the same ongoing process.
-3. **Truly interleaved reasoning.** Perspectives alternate, build on each other, react, revise. Not sequential phases, not parallel-then-merge.
+3. **Truly interleaved reasoning.** Perspectives alternate, build on each other, react, revise. Not sequential phases, and not a single merge at the end. The blind first round above is the one deliberate exception, and it is a delay of one round, not a phase.
 4. **Continuous revision.** Earlier contributions remain revisable until the whole process terminates.
 5. **Termination as convergence, not completion.** No "all roles done" signal. It stops when no perspective can improve the shared state, or when the state crosses a quality threshold.
 
@@ -244,7 +250,7 @@ user reads their own write?
 
 No hand-offs, no lossy serialization. Each perspective sees and responds to everything before it. This is the most practical implementation today; its cost is context length — and, since every voice is one model reading one scratchpad, it has the highest exposure to correlated error of the four.
 
-**Perspective-stitched reasoning.** Multiple parallel reasoning threads over the same shared working memory, each able to read the others and fold in their findings, with periodic synchronization. Like git branches with continuous rebasing, except the merge happens at every commit rather than at the end. Closer to an ensemble than to roles — and the one pattern that keeps the wall worth keeping by construction, because each thread forms a position before it reads the others.
+**Perspective-stitched reasoning.** Multiple parallel reasoning threads over the same shared working memory, each able to read the others and fold in their findings at chosen synchronization points. Like git branches that rebase onto each other at those points rather than only at the end — and the fewer and later the points, the longer the branches stay independent. Closer to an ensemble than to roles, and the one pattern that keeps the wall worth keeping by construction, because each thread forms a position before it reads the others.
 
 **Adversarial self-critique.** Generate, critique, revise, critique — but with the critique *in dialogue* with the generation rather than a separate stage. The generator can challenge the critique; the critique can reframe what counts as a critique. Constitutional AI, Reflexion, and most self-refine approaches are weak versions of this. The strong version gives the critic the full reasoning trace, not just the final output.
 
@@ -274,7 +280,7 @@ Those problems set the agenda for the rest of the series: what to do strategical
 
 The original question was whether humans are limiting AI by imposing paradigms we can understand. The answer is yes, but not in the obvious way. The obvious worry is that partitioning cognition along human expert boundaries loses capability. The deeper worry is that we are limiting AI by making its reasoning illegible to us — a workspace with interleaved, revising, multi-perspective deliberation produces better outputs and harder-to-follow traces, and we have every incentive to flatten that into roles and phases, because roles and phases are what org charts understand.
 
-The limitation is not technical. It is institutional — and, in the two structural cases, not even that: it is inherited from an org chart and a library import that nobody examined. We are not building AI systems that reason well; we are building AI systems that reason in ways we can defend to a project manager, in a shape handed to us by our own reporting lines and our framework's base class. The path forward is systems whose reasoning is genuinely better than ours, even when — especially when — it doesn't look like ours.
+The ceiling is not technical. The problems that are technical are named above, and they are problems of degree — how much context, how much independence, how to tell convergence from agreement. The ceiling is institutional — and, in the two structural cases, not even that: it is inherited from an org chart and a library import that nobody examined. We are not building AI systems that reason well; we are building AI systems that reason in ways we can defend to a project manager, in a shape handed to us by our own reporting lines and our framework's base class. The path forward is systems whose reasoning is genuinely better than ours, even when — especially when — it doesn't look like ours.
 
 The consolation, such as it is: the three reasons that buy something real can be paid for another way, and the three that buy nothing were never argued for in the first place.
 

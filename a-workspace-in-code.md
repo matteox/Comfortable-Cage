@@ -278,7 +278,7 @@ The patterns aren't interchangeable. Quick guidance:
 | Perspective-stitched | Multi-method problems (math, science, optimization) | High (multiple parallel calls) | Integration losses at sync |
 | Adversarial critique | Output quality improvement (writing, reasoning) | Low-medium | Same-model blind spots |
 
-For most tasks, start with multi-voice. It is the simplest, cheapest, and most robust. Move to blackboard when the task has explicit evidence structures that free-form deliberation won't surface. Move to perspective-stitched when the task benefits from parallel method exploration. Use adversarial critique as a finishing layer for any of the above.
+For most tasks, start with multi-voice. It is the simplest and cheapest, and it is also the most exposed to correlated error, so run its first round blind. Move to blackboard when the task has explicit evidence structures that free-form deliberation won't surface. Move to perspective-stitched when the task benefits from parallel method exploration. Use adversarial critique as a finishing layer for any of the above.
 
 ## Composing the patterns
 
