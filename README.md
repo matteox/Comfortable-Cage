@@ -2,6 +2,8 @@
 
 A five-part series on AI reasoning architecture — and why multi-agent systems keep getting built like org charts.
 
+> **Short on time?** The whole argument, both series, in two essays for a corporate reader: [the two-part edition](./short-series/README.md). Under 7,000 words.
+
 ## The thesis
 
 Most AI agent systems are shaped like a small software company: a planner hands off to a coder, who hands off to a reviewer. That shape is not a discovery about how AI reasons best. It is a set of workarounds for human limitations — above all for attention, which had to be rationed because a person can be in one place at a time — ported onto a worker that doesn't have them. We keep reaching for it anyway, for six reasons that have nothing to do with performance: a role-shaped system is legible to a stakeholder and assigns blame to a name; your own org chart reproduces itself in what you build, and the framework you built on already shipped someone else's; "agent" is a person-word that drags roles in behind it; and a role-shaped trace is one a human can actually debug. Three of the six buy something real. None of the three requires the architecture we pay for it with.
