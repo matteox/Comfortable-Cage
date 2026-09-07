@@ -81,6 +81,12 @@ The "I have no contribution" mechanic matters. Without it, every perspective fee
 
 Tasks with clear perspective diversity: design decisions with multiple stakeholders, ethical questions, strategic analysis, anything where the answer genuinely depends on what viewpoint you take. Cheapest pattern to run; lowest context overhead.
 
+### A note on what the perspective lists are
+
+Every pattern below hands the model a list of perspectives, and every one of them is persona prompting — reason 5 from Part 1, used the way it actually pays. Conditioning a model to answer as a skeptic produces different output than asking neutrally. That is real and it is cheap.
+
+What makes these patterns workspace patterns rather than role pipelines is not the personas. It is that the personas share one context and one state, and none of them holds anything the others cannot see. The role-shaped version of the same code is a few lines away: give each perspective its own context, pass a summary between them, and the personas are unchanged while the architecture has become the thing this series argues against. That difference — not the vocabulary, not the number of voices — is the whole distinction. It is also, as Part 3 notes, directly testable: fix the personas and vary only the context sharing.
+
 ## Pattern 2 — The blackboard
 
 Multiple perspectives write to a shared structure. The structure has typed slots — *current hypothesis*, *evidence for*, *evidence against*, *open questions*. Each perspective reads the structure, updates the slots it has authority over, and signals when its updates are complete.

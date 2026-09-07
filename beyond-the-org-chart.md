@@ -6,7 +6,20 @@
 
 The trap is institutional, not technical. So what do we do about it?
 
-There are six viable paths. They differ in time horizon, in who would actually adopt them, and in what they require the field to give up. None is comfortable. The most likely outcome is a hybrid that captures some of the upside and most of the failure mode. Each path does one of three things: reduces the institutional pressure for role-shaped legibility, builds workspace reasoning that stays legible to human oversight, or accepts the SDLC shape and optimizes within it.
+There are seven viable paths. They differ in time horizon, in who would actually adopt them, and in what they require the field to give up. None is comfortable. The most likely outcome is a hybrid that captures some of the upside and most of the failure mode.
+
+Part 1 named six reasons the org chart survives its own origin. The useful way to read the paths below is against that list, because each path treats one reason and none treats more than one:
+
+| Reason it persists | The path that treats it |
+|---|---|
+| Legibility | Path 6 (verifiable traces) removes the demand; Path 2 (the hybrid) satisfies it cheaply |
+| Liability | Path 4 — the only one, and the slowest |
+| The person-metaphor | Path 5 (composable primitives), by replacing the vocabulary |
+| The readable trace | Path 2, by rendering rather than restructuring |
+| Conway's law | Path 7 |
+| The shipped primitive | Path 7 |
+
+Two entries don't appear in that table. Path 1 treats none of the six; it accepts the shape and optimizes inside it, which is a legitimate choice and worth naming as one. Path 3 goes underneath all of them: if deliberation is native to the model, the prompt-time architecture stops being load-bearing, and four of the six lose their grip on it at once. That is why it is the highest-leverage path and the one practitioners can do least about.
 
 ## Path 1 — Optimize the SDLC
 
@@ -48,9 +61,23 @@ The illegibility objection only holds because humans can't follow multi-perspect
 
 If this succeeds, Paths 2 and 3 become dramatically easier to adopt, because the objection dissolves.
 
+## Path 7 — Change what installs the shape
+
+The two structural causes from Part 1 — Conway's law and the framework's role primitive — differ from the other four in a way that matters strategically. Nobody chose them, so nobody is defending them. There is no stakeholder who will object to their removal, no regulation that requires them, no audit that depends on them. They persist because they are invisible, which makes this the cheapest path on the list and the most often skipped, since it isn't an architecture project and produces nothing to put on a diagram.
+
+Three moves:
+
+**Choose the primitive deliberately.** Before adopting a framework, read what its base abstraction actually is. If it is a role with a goal and a backstory, a hand-off pipeline has been bought whatever gets built on top. If it is a shared store, a queue, or an event log, role shapes become something a person has to argue for rather than the default that costs nothing.
+
+**Draw the interfaces before the teams are drawn, or expect the teams to draw them.** If the reasoning layer and the orchestration layer are owned by two groups under separate leadership, a hard interface will appear between reasoning and orchestration and it will be justified on technical grounds. One team owning both layers through the first architecture is worth more than any quantity of design review afterwards.
+
+**Keep the internal vocabulary honest.** Not a style preference. Role words in the code are the channel through which the metaphor and the primitive re-enter after the architecture has been decided, which is why [Part 4](./the-hybrid-failure-mode.md) treats them as a drift signal rather than a nitpick.
+
+The limitation is that this path only prevents. It does nothing for a system already built, and it treats none of the causes anyone is actually arguing about — no one has ever defended their architecture on the grounds that their reporting structure required it. It is worth doing because it is nearly free, not because it is sufficient.
+
 ## What this means for whom
 
-**Building systems today:** prefer shared context over hand-offs. Use role labels for observability, not architecture. The reflex to add a role every time something fails is the gravitational pull from Part 1; notice it. Evaluate on revision and convergence quality, not role completion.
+**Building systems today:** prefer shared context over hand-offs. Use role labels for observability, not architecture. Ask of every role in the system which of the six reasons it serves — a role that can't name one is Conway's law or the framework primitive showing through, and can be deleted without a meeting. The reflex to add a role every time something fails is the gravitational pull from Part 1; notice it. Evaluate on revision and convergence quality, not role completion.
 
 **Evaluating systems:** reward revision of earlier decisions in light of later evidence. Measure information preserved across hand-off boundaries, not just outputs. Treat a single-framing monologue as a warning sign, not a sign of confidence.
 
@@ -65,6 +92,8 @@ The hybrid is where most organizations will land, because it demands the least d
 The longer paths — training objectives, liability reform, verifiable traces — are necessary for the full vision and least likely to be pursued unless someone decides the current trajectory is unsatisfactory. Right now it's producing impressive demos and shipping products. The urgency is low. That is itself a trap: the systems are good enough to ship and not good enough to reveal what they could be.
 
 What would make the institutional pressure relax? Probably nothing less than a few high-profile failures of role-shaped systems in settings where a workspace would have caught the error. The field is unlikely to move on principle. It will move on catastrophe.
+
+One qualification on that, which the six-cause reading makes visible. A visible failure would relax legibility and liability pressure, because those are defended positions and a failure changes what is defensible. It would do nothing whatever to Conway's law or the shipped primitive, because those aren't positions anyone holds — there is nothing there for a catastrophe to argue with. They get fixed by one person importing a different library and another drawing a team boundary somewhere else, or they don't get fixed at all. It is a strange consolation: the two causes least likely to be moved by events are the two easiest to move on purpose.
 
 That is an uncomfortable prediction to end on. It is, as far as we can tell, the honest one.
 

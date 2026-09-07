@@ -12,7 +12,9 @@ Keep carrying it. This series is about tools that sound right.
 
 Every tool in a software company was designed for how humans think. Databases organize data the way humans browse. Email queues messages the way humans process. Sprints bound work the way human attention is bounded. The engineering ladder sorts people the way human institutions sort status. Each was a reasonable answer to a human-cognition-shaped question. None was designed for the worker now being asked to use it.
 
-[The Comfortable Cage](https://github.com/matteox/Comfortable-Cage) made this argument at the reasoning layer: we build AI systems shaped like org charts because org charts are what institutions know how to defend. This series makes the same argument one layer down. Org charts say who is responsible; tool stacks say how that responsibility gets exercised. Together they are the machinery an institution uses to defend AI's outputs to itself — and the cage is comfortable precisely because it asks no one to change.
+[The Comfortable Cage](https://github.com/matteox/Comfortable-Cage) made this argument at the reasoning layer, and its [central section](https://github.com/matteox/Comfortable-Cage/blob/main/shared-cognitive-workspaces.md#why-the-cage-is-comfortable) is worth carrying into this one. The org chart survives for six reasons, not one: it is legible to whoever has to approve the work; it assigns blame to a name; it reproduces itself out of whatever org built the system; it comes pre-installed in the frameworks; the word *agent* drags roles in behind it; and a role-shaped trace is one a human can debug at 2am. Three of the six buy something real. Two were never chosen by anyone.
+
+The same six explain the tools in this series better than "institutions are conservative" does. Org charts say who is responsible; tool stacks say how that responsibility gets exercised. Together they are the machinery an institution uses to defend AI's outputs to itself — and the cage is comfortable precisely because most of it was never a decision.
 
 The framing is deliberate: the emperor has no clothes. Every senior engineer knows code review is doing less than it claims. Every engineering manager knows velocity predicts less than the team's gut. Every DBA knows the relational model is wrong for some class of problems they can't quite name. We know. We don't say so, because saying so is uncomfortable for the institutions that depend on the tools and the careers that depend on the institutions. The posts that follow say it.
 
@@ -24,6 +26,7 @@ One analytical move, applied to every tool. It's explained here once and then us
 2. **Question the need.** Does it exist for AI at all, or is it a human-cognition frame around something more fundamental?
 3. **If the need survives, split the tool in two.** The *data model* is what the tool represents. The *workflow* is the human-shaped process it enforces. Abstract data models tend to survive. Workflows almost never do.
 4. **Say what AI actually needs** to satisfy whatever survived.
+5. **Name the comfort.** If the need dies and the tool is still there, which reason is holding it up? Auditability and accountability are answers that buy something and deserve a cheaper way of buying it. "It's what the platform ships" and "it's how the team is split" are not defences; they are descriptions of a shape nobody picked.
 
 Applied across the stack, the tools sort into three piles, and the piles are the table of contents:
 

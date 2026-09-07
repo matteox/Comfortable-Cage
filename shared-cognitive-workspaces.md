@@ -34,11 +34,31 @@ The reason "specialists versus one big agent" feels like the only framing availa
 | Documentation | Knowledge evaporates between humans | Generated as a byproduct, not a separate workstream |
 | Standups / syncs | Distributed humans drift out of alignment | Shared state is the default, not the exception |
 
-Every one of these is a workaround for a human limitation. None is intrinsic to building software. When we map them onto AI systems we are not porting a process; we are porting a set of patches for problems the AI doesn't have.
+Every one of these is a workaround for a human limitation, and more precisely a rationing scheme: each one decides who has to know what, given that knowing costs somebody an hour. None is intrinsic to building software. When we map them onto AI systems we are not porting a process; we are porting a set of patches for problems the AI doesn't have.
 
 Faster horses, all the way down.
 
-### The legibility trap
+## Why the cage is comfortable
+
+The table above explains why the org chart existed. It does not explain why we
+copy it. Those are different questions, and only the first has a clean answer.
+
+The org chart was a real solution to a real constraint. A person can be in one
+place at a time, interruption is expensive, and asking a busy colleague a
+question is never free. Roles, hand-offs, summaries, review gates, standups,
+seniority — every one of them rations attention, and where attention is the
+scarce thing, rationing it is correct. That constraint does not transfer. For a
+model, interruption is free, simultaneity is free, and repetition is free.
+Something is still scarce — context, not calendar — but that scarcity wants
+relevance selected per question, not ownership partitioned in advance. Those
+are not the same cut.
+
+So the origin story is finished and the shape is still here. Six reasons keep
+it here. They are not variations on one reason: they have different mechanisms,
+different evidence, and — this is the part that matters for what to do about it
+— different cures. Three of them buy something real.
+
+### 1. Legibility — the pipeline is a UI for management
 
 Look at what each role in a typical pipeline actually produces. An "Architect" agent produces a design document a human PM can read. A "Developer" agent produces code that fits a review template. A "Tester" agent produces a report a QA lead can sign off on. Each step is shaped to be legible to a human overseer, not to maximize the quality of the artifact. The pipeline is, structurally, a UI for management.
 
@@ -46,13 +66,61 @@ A single model with a long context, asked to build a system and identify what co
 
 This is a gravitational pull, not a one-time choice. Every time a system fails, the reflex is to add a role to catch the failure next time — a Reviewer, a Critic, a Validator — rather than redesign the reasoning loop so failures surface earlier and cheaper. When single-agent coders fail, the failure is usually not capability but legibility: they produce working software that can't be slotted into the existing machinery, so they get wrapped in role-shaped scaffolding, recreating exactly the partition that was limiting them.
 
-### The part that isn't admitted
-
-We keep building SDLC-shaped systems for reasons that are rarely said out loud.
+### 2. Liability — someone has to sign the thing
 
 Someone has to sign off. An agent named "QA Lead" can sign off. A single-model output signed off by whom — the model, the prompter, the company? Multi-agent systems distribute authority across named actors in a way that maps onto existing accountability structures. And when the "Architect" makes a bad call, that's a role that failed; when a single model produces a bad output, the failure is diffuse. Spreading blame across more actors is exactly what human organizations do, for exactly the same reason.
 
-Better outcomes are not the optimization target. Defensibility is. The org chart is the artifact of liability allocation, and we are reproducing it in silicon because we don't yet have a different liability model for AI outputs. That's the trap — not that we use roles, but that we reach for them by reflex, even when the situation calls for something else.
+Better outcomes are not the optimization target. Defensibility is. The org chart is the artifact of liability allocation, and we are reproducing it in silicon because we don't yet have a different liability model for AI outputs.
+
+Of the six, this is the one with the longest timeline and the least technical content. It is answered by insurers, courts, and regulators, not by architects — which is why [Part 2](./beyond-the-org-chart.md) gives it a path of its own rather than a mitigation.
+
+### 3. Conway's law — you ship your org chart
+
+Conway's 1967 observation is that a system's structure mirrors the communication structure of the organization that built it. It is usually invoked about microservices. It applies here more directly, because the artifact being shaped *is* an organization.
+
+A company with a platform team and an applied-AI team ships an agent architecture with a boundary in exactly that spot. The boundary gets defended on technical grounds by people who do not notice they are describing their own reporting lines. Nobody chooses this and nobody argues for it; it arrives with the org and is already load-bearing by the time anyone reviews the design.
+
+The claim is falsifiable and cheap to check. You should be able to guess the shape of a company's agent framework from its engineering org chart more often than chance. Where a vendor has a research group and a product group under separate leadership, expect a hard interface between reasoning and orchestration. Where one team owns both, expect them tangled together. Anyone with access to a dozen frameworks and their teams could run this in an afternoon, and it would be the cheapest evidence in this series.
+
+No prompt fixes this. It is decided by who is in the room when the interfaces are drawn, which makes it the one cause on this list a technical lead cannot address alone.
+
+### 4. The shipped primitive — someone else's org chart, pre-installed
+
+Reason 3, one level up. The popular agent frameworks ship *role* as the base abstraction: instantiate a role, give it a goal and a backstory, wire it to other roles. That primitive was not derived from evidence about how models reason. It was derived from how the framework's authors pictured a team — Conway's law running at the vendor, with the result shipped to everyone else as an API.
+
+The abstraction available is the abstraction used. A team that would never sit down and deliberately design a hand-off pipeline will build one anyway, because building anything else means fighting the framework the whole way. By the time the architecture gets reviewed, the shape is three months old, and no one remembers choosing it because no one did.
+
+This is the cheapest of the six to fix and the least often noticed. Choose tools whose primitive is shared state, a queue, or an event log, and role-shaped architecture stops being the default that costs nothing and becomes a thing somebody has to argue for.
+
+### 5. The person-metaphor — "agent" is a person-word
+
+We have no vocabulary for coordinating non-human minds, so we borrowed the one for coordinating people. The borrowing is not neutral. Once the unit is an *agent* it wants a *role*; once it has a role it wants a *responsibility*; a responsibility wants a *boundary*. Four words later the architecture is decided, and no one made a decision.
+
+What makes this one durable is that it has real evidence behind it, applied at the wrong layer. Persona prompting works. Telling a model to answer as a skeptical security reviewer produces different and often better output than asking neutrally, and every practitioner has seen it work. That is a fact about conditioning a distribution inside one context. It is not evidence that the *system* should be split into security-reviewer-shaped components with their own contexts and hand-offs between them. The first is prompt engineering and it pays for itself. The second is architecture and it costs. Conflating them is the most common form of the mistake this series is about, and the hardest to argue with, because the person making it can point at a result that is genuinely there.
+
+The distinction is separable and testable: hold the personas fixed and vary only whether they share context. [Part 3](./training-models-to-deliberate.md) proposes it as an ablation; [Part 5](./a-workspace-in-code.md) shows what the two look like in code, and they are only a few lines apart.
+
+### 6. The readable trace — the honest one
+
+A role-shaped system is easier to debug. When the trace reads Architect → Developer → Reviewer, an engineer can find the fault by scanning. When six voices revise a shared board for four hundred turns, they cannot. This is not management theatre. It is someone at 2am trying to locate a failure, and it is why people who accept every argument in this series still ship role-shaped systems and are not being cowards about it.
+
+It also has the clearest exit, because debuggability is a rendering problem, and role-shaped execution is an extravagant way to solve a rendering problem — you have restructured the computation to make the log easier to read. [Part 4](./the-hybrid-failure-mode.md) is the whole argument for paying with a projection instead. But the need is real, and a series that waves it away loses exactly the readers most worth convincing.
+
+### The six, and what to do about each
+
+| Reason | What it buys | Survives contact with AI | Treated in |
+|---|---|---|---|
+| *Attention scarcity* (the origin) | Nothing here — the constraint doesn't transfer | No | This post |
+| Legibility | Real oversight | The need does; the architecture doesn't | Part 2 (Paths 2, 6), Part 4 |
+| Liability | Real accountability | Yes — and it needs a new answer, not a new architecture | Part 2 (Path 4) |
+| Conway's law | Nothing | No | Part 2 (Path 7) |
+| The shipped primitive | Convenience | No | Part 2 (Path 7) |
+| The person-metaphor | Prompt-level gains, misapplied at the system level | At the prompt yes, at the architecture no | Part 3, Part 5 |
+| The readable trace | Real debuggability | The need does; the architecture doesn't | Part 4 |
+
+Three of the six buy something real: oversight, accountability, debuggability. None of the three requires the architecture we currently pay for it with. The other three are not trades at all — they are the shape arriving by default, out of the org that built the system, the framework it was built on, and the words used to describe it.
+
+That is what makes the cage comfortable rather than merely wrong. Most of it was never chosen.
 
 ## The false dichotomy
 
@@ -144,7 +212,7 @@ What the evidence does not yet settle is the institutional claim above: *why* ro
 
 ## What's unsolved
 
-The hard parts are real. **Context economics** — shared state grows, and models are bad at knowing what to forget. **Termination** — "no perspective can improve this" is harder to detect than "all roles are done," especially when improvement is asymptotic. **Verification** — role-based systems have a QA phase as the answer; a workspace needs evaluation that is itself part of the workspace, ongoing rather than staged. **Who decides** — when perspectives can't converge, whoever breaks the tie reintroduces exactly the authority structure the workspace was meant to dissolve. **Compute** — N perspectives times M revisions is expensive today, though inference costs are falling.
+The hard parts are real. **Context economics** — shared state grows, and models are bad at knowing what to forget. **Termination** — "no perspective can improve this" is harder to detect than "all roles are done," especially when improvement is asymptotic. **Verification** — role-based systems have a QA phase as the answer; a workspace needs evaluation that is itself part of the workspace, ongoing rather than staged. **Who decides** — when perspectives can't converge, whoever breaks the tie reintroduces exactly the authority structure the workspace was meant to dissolve. **Compute** — N perspectives times M revisions is expensive today, though inference costs are falling. And **four of the six reasons above sit outside the architecture entirely** — liability is answered by insurers and courts, Conway's law by who reports to whom, the primitive by what the ecosystem ships, the metaphor by the language available. A perfect workspace design does not touch any of them, which is why this series does not end at Part 1.
 
 Those problems set the agenda for the rest of the series: what to do strategically given the diagnosis ([Part 2](./beyond-the-org-chart.md)), how to train models that deliberate natively ([Part 3](./training-models-to-deliberate.md)), how to run a hybrid without letting it collapse back into roles ([Part 4](./the-hybrid-failure-mode.md)), and what the patterns look like in code ([Part 5](./a-workspace-in-code.md)).
 
@@ -152,7 +220,9 @@ Those problems set the agenda for the rest of the series: what to do strategical
 
 The original question was whether humans are limiting AI by imposing paradigms we can understand. The answer is yes, but not in the obvious way. The obvious worry is that partitioning cognition along human expert boundaries loses capability. The deeper worry is that we are limiting AI by making its reasoning illegible to us — a workspace with interleaved, revising, multi-perspective deliberation produces better outputs and harder-to-follow traces, and we have every incentive to flatten that into roles and phases, because roles and phases are what org charts understand.
 
-The limitation is not technical. It is institutional. We are not building AI systems that reason well; we are building AI systems that reason in ways we can defend to a project manager. The path forward is systems whose reasoning is genuinely better than ours, even when — especially when — it doesn't look like ours.
+The limitation is not technical. It is institutional — and, in the two structural cases, not even that: it is inherited from an org chart and a library import that nobody examined. We are not building AI systems that reason well; we are building AI systems that reason in ways we can defend to a project manager, in a shape handed to us by our own reporting lines and our framework's base class. The path forward is systems whose reasoning is genuinely better than ours, even when — especially when — it doesn't look like ours.
+
+The consolation, such as it is: the three reasons that buy something real can be paid for another way, and the three that buy nothing were never argued for in the first place.
 
 Shared cognitive workspaces are one sketch of what that looks like.
 

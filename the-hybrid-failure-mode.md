@@ -28,9 +28,9 @@ This is not malicious. It is not stupidity. It is the natural incentive structur
 
 It has already happened once in the research literature, which is worth knowing because the drift is otherwise easy to dismiss as an organizational anecdote. A 2026 paper on [deterministic blackboard pipelines](https://dl.acm.org/doi/10.1145/3816713.3818808) started from the classical blackboard — shared state, knowledge sources firing opportunistically as the board changes — and found the opportunistic firing produced execution that was emergent and hard to trace. Their fix was to replace the scheduler with a fixed pipeline: keep the shared state, give up the dynamism, get legibility back. The authors are candid that this is a simplification, and for their domain it may be the right trade. But notice the shape of it. The traceability requirement did not sit beside the architecture; it reached in and re-sequenced it. That is the mechanism above, running in a lab instead of a product team.
 
-## Five disciplines to maintain the boundary
+## Six disciplines to maintain the boundary
 
-The hybrid works only if the team actively defends the gap between the view and the underlying system. That requires sustained discipline. Five practices help.
+The hybrid works only if the team actively defends the gap between the view and the underlying system. That requires sustained discipline. Six practices help.
 
 ### 1. Treat the view as deliberately lossy
 
@@ -76,6 +76,12 @@ If the projection algorithm is wrong — if it produces views that mischaracteri
 
 This is the architectural equivalent of treating views as queries rather than cached denormalizations. Drift is structural in cached views; it is impossible in query views.
 
+### 6. Make every role justify itself
+
+Once a quarter, take each role that appears anywhere in the system — in the projection, in the code, in the architecture diagram — and name which of Part 1's six reasons it serves. Legibility, liability, and debuggability are legitimate answers, and a role that gives one of them should then be checked for whether a rendered view would serve it more cheaply. "Because the framework's base class is a role" and "because that's how our teams are split" are not answers; they are Conway's law and the shipped primitive showing through, and roles that give those answers can be removed without consulting anyone, because nobody chose them and nobody is defending them.
+
+This is the cheapest of the six disciplines and the one that catches drift earliest, because a role always acquires its justification after it exists.
+
 ## Anti-patterns to avoid
 
 Some specific failure modes are worth naming directly:
@@ -83,6 +89,10 @@ Some specific failure modes are worth naming directly:
 **Adding a role to address a failure.** When the system produces a bad output, the instinctive response is "we need a Reviewer role to catch this." This is exactly the gravitational pull Part 1 described. It is also how role-shaped architecture reasserts itself. The right response is to redesign the reasoning loop so the failure surfaces earlier — for example, by having perspectives challenge each other at the relevant decision point.
 
 **Naming perspectives after roles.** Internal perspectives should be named for their function, not their organizational role. *Critic*, *Synthesizer*, *Domain Expert*, *Adversary* — these are workspace primitives. *Architect*, *Developer*, *Tester* are org-chart roles. Use the workspace vocabulary internally, even when the external projection uses roles.
+
+**Letting the framework pick the shape back up.** A dependency upgrade, a new orchestration library, a helpful refactor onto the ecosystem's idiomatic pattern — and the internals are role-shaped again, having never been discussed. This is the drift that leaves no trace in a design document, because it arrived as a routine change. Whoever reviews dependency changes should be watching for the base abstraction, not just the version number.
+
+**Letting a re-org redraw the architecture.** When the team that owns the system splits in two, an interface appears where the split is, and it will be argued for on technical grounds by people who believe the technical argument. The tell is timing: an interface proposal that arrives within a month of a reporting change is Conway's law with a design rationale attached. This one cannot be fixed inside the codebase, which is why Part 2 gives it a path of its own.
 
 **Letting stakeholders write the projection.** Once stakeholders start editing the projection template, the projection has stopped being a projection. It has become a spec, and the underlying system will be reshaped to match it.
 
@@ -105,20 +115,21 @@ The signals of failure, in order of severity:
 
 1. Traces look too clean
 2. Engineers reach for role vocabulary in code review
-3. Stakeholder feedback starts reshaping the underlying system, not just the projection
-4. The projection becomes a stable template rather than a generated view
-5. The "roles" become load-bearing — removing one breaks the system in ways that suggest it was doing real architectural work, not just being a label
+3. **No one can say which reason a role serves.** Ask of any role why it is there. If the answer is legibility, liability, or debuggability, the hybrid is working as designed. If the answer is a shrug, a framework class name, or a team name, the shape is being installed rather than chosen — and it is being installed continuously, by every dependency upgrade and every re-org, not once at design time. This signal is the earliest available and the least dramatic, which is why it gets skipped.
+4. Stakeholder feedback starts reshaping the underlying system, not just the projection
+5. The projection becomes a stable template rather than a generated view
+6. The "roles" become load-bearing — removing one breaks the system in ways that suggest it was doing real architectural work, not just being a label
 
-By the time you hit signal 4 or 5, the hybrid has degraded into Path 1 with extra complexity. Recovering requires a rebuild, not a tuning.
+Signals 1 through 3 are recoverable by discipline. By the time you hit 5 or 6, the hybrid has degraded into Path 1 with extra complexity, and recovering requires a rebuild rather than a tuning.
 
 ```
-Hybrid (intended)                                          Path 1 (drifted)
-workspace internals,                                        role-shaped internals,
-role-shaped view          1        2        3        4   5  extra complexity,
-                     ──────────────────────────────────────>  same ceiling as Path 1
-                     traces    role talk   stakeholder   projection   roles become
-                     too clean  in review   reshapes      hardens     load-bearing
-                                             the system    into spec
+Hybrid (intended)                                             Path 1 (drifted)
+workspace internals,                                          role-shaped internals,
+role-shaped view       1        2        3       4      5   6 extra complexity,
+                   ─────────────────────────────────────────>  same ceiling as Path 1
+                   traces   role talk  no reason  stakeholder  projection  roles become
+                   too clean in review  for the    reshapes     hardens    load-bearing
+                                        role       the system   into spec
 ```
 
 ## When to give up
@@ -127,6 +138,7 @@ The hybrid is not always the right path. Give up on it if:
 
 - Your stakeholders genuinely need role-shaped accountability for legal or regulatory reasons. Then Path 4 (liability reform, from Part 2) is your real path; the hybrid is a workaround pretending to be an architecture.
 - Your task is genuinely role-shaped — that is, the work actually decomposes into independent specialized contributions. For some tasks this is true. For most tasks that get framed this way, it isn't.
+- Your framework's base abstraction is a role and you are not willing to change frameworks. This sounds like a small thing and is not. Fighting the primitive on every feature for two years costs more than the migration, and the projection will lose — the idiomatic pattern wins by default in every code review where nobody is thinking about it.
 - Your team cannot maintain the disciplines above. Say so plainly — most teams cannot, given the institutional pressures they operate under. In that case, Path 1 (accept the SDLC shape and optimize within it) is a more honest choice than a hybrid that drifts.
 
 ## The uncomfortable meta-point

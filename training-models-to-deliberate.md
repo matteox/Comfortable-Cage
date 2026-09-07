@@ -4,7 +4,7 @@
 
 ---
 
-Of the six paths, training models natively for multi-perspective deliberation has the most upside, the most interesting research questions, and the highest chance of being ignored until the easier paths stop working. This post lays out the problem once, then four near-term experiments that each buy some of the outcome without waiting for the full solution.
+Of the seven paths, training models natively for multi-perspective deliberation has the most upside, the most interesting research questions, and the highest chance of being ignored until the easier paths stop working. This post lays out the problem once, then four near-term experiments that each buy some of the outcome without waiting for the full solution.
 
 ## What deliberation means here
 
@@ -90,7 +90,11 @@ The measured work cited in [Part 1](./shared-cognitive-workspaces.md) does more 
 
 **Termination as convergence, measured.** Every published system stops when a decider agent says so, when a round cap is hit, or by similarity-voting among candidate answers. This series proposes stopping on convergence, and should define it operationally so it can be compared: the board's delta stays below a threshold for *k* rounds, or no voice reports an improvement it could make. Compare against a decider on quality and on tokens. Part 1 lists termination as unsolved; this is the experiment that would move it.
 
+**What training cannot reach.** Worth stating in a research post, because it bounds what success here would mean. Of the six reasons Part 1 gives for the org chart's survival, a natively deliberative model touches at most two — it removes the need for prompt-time role scaffolding, and it weakens the person-metaphor by making the alternative concrete. It does nothing about liability, nothing about Conway's law, nothing about which primitive the frameworks ship, and nothing about an engineer needing a readable trace at 2am. A perfect result on this agenda still lands in an ecosystem that installs the old shape by default. That is not an argument against the research; it is an argument for not treating it as the whole answer.
+
 **Long-horizon is the untested regime.** The blackboard gains — best average performance across knowledge and reasoning benchmarks in one study, 13–57% relative improvement in another — are on short, single-answer tasks. This series' claims are about software work where the board grows for hours. The evidence already hints at where that goes: Han and Zhang's ablation found that removing the agent that prunes stale content from the board *hurt* performance, at only four rounds. Part 1 predicts that what to forget becomes the dominant problem at four hundred. The SWE-bench-style run hasn't been done, and the series should say in advance what it expects to break first: context economics, then convergence detection.
+
+**Separate persona from partition.** The most common defence of role-shaped architecture is a real result at the wrong layer: persona prompting works, so roles must work. Those are different claims and they come apart cleanly in an ablation. Hold the personas fixed — the same skeptic, the same security reviewer, the same synthesizer, the same prompts — and vary only whether they share one context or hold separate ones with hand-offs between them. If the gains survive the partition, the person-metaphor from Part 1 is not a projection but a finding, and this series is wrong about something important. If they don't, the field has been buying an architecture to get an effect that costs a paragraph of prompt. Nobody appears to have run it, and it is a week of work.
 
 **A position against one recommendation.** MAST's authors and their close readers call for standardized communication protocols between agents. Standardized hand-offs are Path 1 — tidier partition. The series' position is that this is a faster horse: the gain is in fewer boundaries, not better-formatted ones. That is a specific disagreement with a good paper, and it's the kind of claim an essay series exists to make.
 
