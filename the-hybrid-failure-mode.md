@@ -28,9 +28,9 @@ This is not malicious. It is not stupidity. It is the natural incentive structur
 
 It has already happened once in the research literature, which is worth knowing because the drift is otherwise easy to dismiss as an organizational anecdote. A 2026 paper on [deterministic blackboard pipelines](https://dl.acm.org/doi/10.1145/3816713.3818808) started from the classical blackboard — shared state, knowledge sources firing opportunistically as the board changes — and found the opportunistic firing produced execution that was emergent and hard to trace. Their fix was to replace the scheduler with a fixed pipeline: keep the shared state, give up the dynamism, get legibility back. The authors are candid that this is a simplification, and for their domain it may be the right trade. But notice the shape of it. The traceability requirement did not sit beside the architecture; it reached in and re-sequenced it. That is the mechanism above, running in a lab instead of a product team.
 
-## Six disciplines to maintain the boundary
+## Seven disciplines to maintain the boundary
 
-The hybrid works only if the team actively defends the gap between the view and the underlying system. That requires sustained discipline. Six practices help.
+The hybrid works only if the team actively defends the gap between the view and the underlying system. That requires sustained discipline. Seven practices help.
 
 ### 1. Treat the view as deliberately lossy
 
@@ -49,6 +49,8 @@ When reviewing traces, reviewers should ask: "Is this projection accurate to the
 An accurate projection shows the kinds of disagreements and revisions that the workspace actually produced. A retrofitted projection shows clean role-by-role hand-offs that look good but don't reflect what the system actually did.
 
 The signal that drift has occurred: traces start looking too clean. Real deliberation has rough edges — abandoned positions, partial arguments, dead ends, mid-reasoning reversals. If every trace looks like a textbook role-based workflow, the projection has taken over the architecture.
+
+Clean traces have a second cause, and the audit has to tell the two apart. A retrofitted projection hides disagreement that happened. Voices primed the same way never produced any. Part 1 calls this correlated error, and it is the one clean-trace failure that is not drift toward roles: the voices share a base model and a board, so fast, unanimous convergence may mean they agreed before they started. Read the first round of every trace. If the voices open in agreement, the workspace is not deliberating; it is one voice with several labels — the monolithic pole from Part 1 wearing the workspace's clothes.
 
 ### 3. Resist "make the view more accurate"
 
@@ -76,11 +78,15 @@ If the projection algorithm is wrong — if it produces views that mischaracteri
 
 This is the architectural equivalent of treating views as queries rather than cached denormalizations. Drift is structural in cached views; it is impossible in query views.
 
-### 6. Make every role justify itself
+### 6. Audit the schedule as well as the gap
+
+Discipline 4 keeps role vocabulary out of the internal language. Extend it to ordering. Every constraint that makes one voice wait for another should name what it buys — a token budget, a rate limit, a data dependency. "That's the order it goes in" is not a reason; it is the calendar, reasserting itself in a place where nothing has a calendar.
+
+### 7. Make every role justify itself
 
 Once a quarter, take each role that appears anywhere in the system — in the projection, in the code, in the architecture diagram — and name which of Part 1's six reasons it serves. Legibility, liability, and debuggability are legitimate answers, and a role that gives one of them should then be checked for whether a rendered view would serve it more cheaply. "Because the framework's base class is a role" and "because that's how our teams are split" are not answers; they are Conway's law and the shipped primitive showing through, and roles that give those answers can be removed without consulting anyone, because nobody chose them and nobody is defending them.
 
-This is the cheapest of the six disciplines and the one that catches drift earliest, because a role always acquires its justification after it exists.
+This is the cheapest of the seven disciplines and the one that catches drift earliest, because a role always acquires its justification after it exists.
 
 ## Anti-patterns to avoid
 
@@ -89,6 +95,10 @@ Some specific failure modes are worth naming directly:
 **Adding a role to address a failure.** When the system produces a bad output, the instinctive response is "we need a Reviewer role to catch this." This is exactly the gravitational pull Part 1 described. It is also how role-shaped architecture reasserts itself. The right response is to redesign the reasoning loop so the failure surfaces earlier — for example, by having perspectives challenge each other at the relevant decision point.
 
 **Naming perspectives after roles.** Internal perspectives should be named for their function, not their organizational role. *Critic*, *Synthesizer*, *Domain Expert*, *Adversary* — these are workspace primitives. *Architect*, *Developer*, *Tester* are org-chart roles. Use the workspace vocabulary internally, even when the external projection uses roles.
+
+**Scheduling the workspace.** Adding a phase boundary, a batch, a work-in-progress limit, or a "let the critic wait until the draft is finished" rule. Each arrives as a sensible efficiency measure and each one reinstalls the calendar. Sometimes the reason is real — a token budget, a rate limit, a genuine data dependency where a critic cannot evaluate a design that does not exist yet. Often the reason is that the trace reads better in sequence, which is the projection reaching into the architecture by a route the role labels never had to take.
+
+**Syncing early.** Letting every voice read the board before it has formed a position. It feels like the point of shared state, and it is the fastest way to lose the one thing a second voice was for. Part 1's rule is narrow: keep the walls that buy independent error. A first position formed blind, a late sync rather than a continuous one, and a different model in the critic seat on the paths that matter are the three mitigations Part 5 builds in — and none of them is a phase boundary. The voices are not waiting on each other; they are declining to read each other for exactly one round.
 
 **Letting the framework pick the shape back up.** A dependency upgrade, a new orchestration library, a helpful refactor onto the ecosystem's idiomatic pattern — and the internals are role-shaped again, having never been discussed. This is the drift that leaves no trace in a design document, because it arrived as a routine change. Whoever reviews dependency changes should be watching for the base abstraction, not just the version number.
 
@@ -108,28 +118,30 @@ A well-run hybrid has these properties:
 - The projection is consistent across sessions — different runs of similar tasks produce similar role-shaped views because the projection algorithm is fixed
 - Stakeholders can read the trace and find the perspectives they care about (security implications, cost implications, edge cases)
 - Engineers think and talk about the system in workspace vocabulary, not role vocabulary
-- Traces show genuine disagreement, mid-reasoning reversal, and partial arguments — not smooth role-based hand-offs
+- Traces show genuine disagreement, mid-reasoning reversal, and partial arguments — not smooth role-based hand-offs — and the disagreement is there in the first round, not manufactured after a consensus has formed
+- Nothing waits on anything else without a stated reason: a budget, a rate limit, a data dependency
 - The system improves over time without the role shape changing
 
 The signals of failure, in order of severity:
 
-1. Traces look too clean
+1. Traces look too clean — because the projection has been retrofitted, or because the voices agreed before they started
 2. Engineers reach for role vocabulary in code review
-3. **No one can say which reason a role serves.** Ask of any role why it is there. If the answer is legibility, liability, or debuggability, the hybrid is working as designed. If the answer is a shrug, a framework class name, or a team name, the shape is being installed rather than chosen — and it is being installed continuously, by every dependency upgrade and every re-org, not once at design time. This signal is the earliest available and the least dramatic, which is why it gets skipped.
-4. Stakeholder feedback starts reshaping the underlying system, not just the projection
-5. The projection becomes a stable template rather than a generated view
-6. The "roles" become load-bearing — removing one breaks the system in ways that suggest it was doing real architectural work, not just being a label
+3. **No one can say which reason a role serves.** Ask of any role why it is there. If the answer is legibility, liability, or debuggability, the hybrid is working as designed. If the answer is a shrug, a framework class name, or a team name, the shape is being installed rather than chosen — and it is being installed continuously, by every dependency upgrade and every re-org, not once at design time.
+4. **The system starts scheduling.** Queuing, batching, phase boundaries, work-in-progress limits, one voice waiting on another for no technical reason. Scheduling is what you do when the workers cannot all be interrupted at once, and nothing here has that problem. It is also the easiest signal to miss, because scheduling arrives dressed as cost control.
+5. Stakeholder feedback starts reshaping the underlying system, not just the projection
+6. The projection becomes a stable template rather than a generated view
+7. The "roles" become load-bearing — removing one breaks the system in ways that suggest it was doing real architectural work, not just being a label
 
-Signals 1 through 3 are recoverable by discipline. By the time you hit 5 or 6, the hybrid has degraded into Path 1 with extra complexity, and recovering requires a rebuild rather than a tuning.
+The seven fall into three groups, and the grouping matters more than the count. Signals 1 and 2 are drift in *appearance* — language and surface, recoverable by discipline; the exception is a clean trace produced by voices that agreed before they started, which is not drift at all but the correlated-error problem from Part 1, and discipline 2 exists to tell the two apart. Signals 3 and 4 are the hinge: a role nobody can justify and an ordering nobody can defend are the points at which the architecture has actually changed, whatever the diagram still says. Signals 5 through 7 are consolidation, and by then the hybrid has degraded into Path 1 with extra complexity — recovering requires a rebuild rather than a tuning.
 
 ```
-Hybrid (intended)                                             Path 1 (drifted)
-workspace internals,                                          role-shaped internals,
-role-shaped view       1        2        3       4      5   6 extra complexity,
-                   ─────────────────────────────────────────>  same ceiling as Path 1
-                   traces   role talk  no reason  stakeholder  projection  roles become
-                   too clean in review  for the    reshapes     hardens    load-bearing
-                                        role       the system   into spec
+Hybrid (intended)         appearance  │ hinge │   consolidation     Path 1 (drifted)
+workspace internals,                  │       │                     role-shaped internals,
+role-shaped view       1        2     │ 3   4 │  5       6      7   extra complexity,
+                   ──────────────────────────────────────────────>  same ceiling as Path 1
+                   traces   role talk  no      the      stake-  projection  roles become
+                   too clean in review  reason  system   holder  hardens     load-bearing
+                                        for it  schedules reshapes into spec
 ```
 
 ## When to give up

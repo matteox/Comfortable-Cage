@@ -38,20 +38,74 @@ Every one of these is a workaround for a human limitation, and more precisely a 
 
 Faster horses, all the way down.
 
-## Why the cage is comfortable
-
-The table above explains why the org chart existed. It does not explain why we
-copy it. Those are different questions, and only the first has a clean answer.
+## What the org chart was for
 
 The org chart was a real solution to a real constraint. A person can be in one
 place at a time, interruption is expensive, and asking a busy colleague a
-question is never free. Roles, hand-offs, summaries, review gates, standups,
-seniority — every one of them rations attention, and where attention is the
-scarce thing, rationing it is correct. That constraint does not transfer. For a
-model, interruption is free, simultaneity is free, and repetition is free.
-Something is still scarce — context, not calendar — but that scarcity wants
-relevance selected per question, not ownership partitioned in advance. Those
-are not the same cut.
+question is never free. Read the middle column of the table above again: every
+row is an attention limit. Roles, hand-offs, summaries, review gates, standups,
+seniority — each one decides who has to know what, given that knowing costs
+somebody an hour. Where attention is the scarce thing, rationing it is correct.
+
+The question is what happens when you carry the answer somewhere the problem
+doesn't exist.
+
+Interruption is free here. There is no context-switch penalty, no lost hour of
+flow, no irritation at being pulled off something else. Simultaneity is free —
+the same perspective can be instantiated forty times at once, across forty
+branches of the same problem. Repetition is free; asking the same question a
+fifth time costs what the first cost, and nobody sighs.
+
+Something is still scarce, which is where "time doesn't matter for AI"
+overshoots. Tokens cost money. Latency is real. The context window is finite,
+and quality degrades well before it fills. If every voice consults every other
+voice, call count goes quadratic, and that is a bill somebody pays. So the
+constraint did not vanish. It moved.
+
+> **The scarce resource is context, not calendar.**
+
+The two scarcities want different architectures. Rationing calendar time means
+partitioning by *ownership*: this person handles that, and nobody else needs to
+look. Rationing context means selecting by *relevance*: this inference needs
+those facts, and the next one needs a different set. Ownership partitions are
+stable, hierarchical, and drawn in advance. Relevance selections are
+per-question, overlapping, and drawn at the point of use. They are not the same
+cut, and one of them is still being made because the other used to be necessary.
+
+The sub-agent pattern is where this is easiest to see. A sub-agent works with
+rich context and returns a paragraph to the orchestrator. That is a status
+report. It exists in organisations because a director cannot read every diff.
+Here the orchestrator could have read all of it. The summary is lossy
+serialisation performed out of habit — the compression outliving the thing it
+was compressing for.
+
+### An aside on mixture-of-experts
+
+One tempting misreading is worth heading off. Mixture-of-experts looks like the org chart made architecture: dedicated experts, a router sending each question to the right specialist, nobody bothering anyone else while they work. If that were what MoE is, it would be evidence that partition is natural after all.
+
+It isn't. MoE routing is sparse activation for FLOPs economy — a way to grow parameters without growing compute per token. That scarcity is real and it is arithmetic, not politeness. But the experts are not domain specialists. Routing is largely per-token and driven by learned features that turn out to be substantially positional and syntactic; interpretability work keeps failing to find the legal expert or the SQL expert people expect to be in there. The experts specialise in something, and it is mostly not the thing the name suggests.
+
+Which makes MoE an example of the pattern rather than a counterexample. The mechanism is a compute-allocation trick. The org chart is what we read into it: we named the components *experts*, inferred that each one owns a domain, and then built agent systems in the image of the metaphor rather than the mechanism. [Part 3](./training-models-to-deliberate.md) takes this up on the engineering side — composable adapters get similar specialisation by additive perturbation on shared computation, with no partition at all.
+
+### The wall worth keeping
+
+Not every boundary is scheduling, and the argument would be too easy if it were.
+
+Some walls buy independence. Blind review works because reviewers cannot see each other. Two estimates beat one when they were formed separately. The value there is not the partition itself; it is that the errors are uncorrelated.
+
+That concern gets *worse* when the workers are models. Voices drawn from the same base model already share priors; give them identical context and the correlation rises. Convergence then means agreement, not confirmation, and a workspace that converges quickly may be converging because every voice was primed the same way. This is the strongest technical objection to the architecture this series argues for, and it recurs — as an evaluation problem and a proposed measurement in [Part 3](./training-models-to-deliberate.md), as the second reading of the earliest drift signal in [Part 4](./the-hybrid-failure-mode.md), and as a design constraint on every pattern in [Part 5](./a-workspace-in-code.md).
+
+So the rule is not *everyone sees everything*. It is narrower:
+
+> Keep the walls that buy independent error. Demolish the ones that only bought scheduling.
+
+Almost every wall in the SDLC is the second kind.
+
+## Why the cage is comfortable
+
+The section above explains why the org chart existed, and why the reason
+expired. It does not explain why we copy it anyway. Those are different
+questions, and only the first has a clean answer.
 
 So the origin story is finished and the shape is still here. Six reasons keep
 it here. They are not variations on one reason: they have different mechanisms,
@@ -154,7 +208,7 @@ Pole A: Partitioned              Pole B: Monolithic            Shared Cognition
 
 Five properties:
 
-1. **Shared mutable state.** Every participant reads and writes the same representation. No private contexts, no hand-offs that compress information.
+1. **Shared mutable state.** Every participant reads and writes the same representation. No private contexts, no hand-offs that compress information — with the one exception carved out above: a first position formed before the board is read, so that each voice brings something independent to it.
 2. **No premature commitment.** No perspective "finishes" before others can intervene. A draft architecture can be revised after the implementation perspective has spoken, because the implementation perspective is part of the same ongoing process.
 3. **Truly interleaved reasoning.** Perspectives alternate, build on each other, react, revise. Not sequential phases, not parallel-then-merge.
 4. **Continuous revision.** Earlier contributions remain revisable until the whole process terminates.
@@ -188,9 +242,9 @@ What happens during the consistency window when a
 user reads their own write?
 ```
 
-No hand-offs, no lossy serialization. Each perspective sees and responds to everything before it. This is the most practical implementation today; its cost is context length.
+No hand-offs, no lossy serialization. Each perspective sees and responds to everything before it. This is the most practical implementation today; its cost is context length — and, since every voice is one model reading one scratchpad, it has the highest exposure to correlated error of the four.
 
-**Perspective-stitched reasoning.** Multiple parallel reasoning threads over the same shared working memory, each able to read the others and fold in their findings, with periodic synchronization. Like git branches with continuous rebasing, except the merge happens at every commit rather than at the end. Closer to an ensemble than to roles.
+**Perspective-stitched reasoning.** Multiple parallel reasoning threads over the same shared working memory, each able to read the others and fold in their findings, with periodic synchronization. Like git branches with continuous rebasing, except the merge happens at every commit rather than at the end. Closer to an ensemble than to roles — and the one pattern that keeps the wall worth keeping by construction, because each thread forms a position before it reads the others.
 
 **Adversarial self-critique.** Generate, critique, revise, critique — but with the critique *in dialogue* with the generation rather than a separate stage. The generator can challenge the critique; the critique can reframe what counts as a critique. Constitutional AI, Reflexion, and most self-refine approaches are weak versions of this. The strong version gives the critic the full reasoning trace, not just the final output.
 
@@ -212,7 +266,7 @@ What the evidence does not yet settle is the institutional claim above: *why* ro
 
 ## What's unsolved
 
-The hard parts are real. **Context economics** — shared state grows, and models are bad at knowing what to forget. **Termination** — "no perspective can improve this" is harder to detect than "all roles are done," especially when improvement is asymptotic. **Verification** — role-based systems have a QA phase as the answer; a workspace needs evaluation that is itself part of the workspace, ongoing rather than staged. **Who decides** — when perspectives can't converge, whoever breaks the tie reintroduces exactly the authority structure the workspace was meant to dissolve. **Compute** — N perspectives times M revisions is expensive today, though inference costs are falling. And **four of the six reasons above sit outside the architecture entirely** — liability is answered by insurers and courts, Conway's law by who reports to whom, the primitive by what the ecosystem ships, the metaphor by the language available. A perfect workspace design does not touch any of them, which is why this series does not end at Part 1.
+The hard parts are real. **Context economics** — shared state grows, and models are bad at knowing what to forget. **Termination** — "no perspective can improve this" is harder to detect than "all roles are done," especially when improvement is asymptotic. **Verification** — role-based systems have a QA phase as the answer; a workspace needs evaluation that is itself part of the workspace, ongoing rather than staged. **Who decides** — when perspectives can't converge, whoever breaks the tie reintroduces exactly the authority structure the workspace was meant to dissolve. **Correlated error** — the sharpest of them, because it is the workspace's own mechanism turned against it. Voices sharing a base model and a board are the least independent judges available, so convergence can be agreement rather than confirmation, and there is no established way to measure how much independence a given amount of shared context costs. **Compute** — N perspectives times M revisions is expensive today, though inference costs are falling. And **four of the six reasons above sit outside the architecture entirely** — liability is answered by insurers and courts, Conway's law by who reports to whom, the primitive by what the ecosystem ships, the metaphor by the language available. A perfect workspace design does not touch any of them, which is why this series does not end at Part 1.
 
 Those problems set the agenda for the rest of the series: what to do strategically given the diagnosis ([Part 2](./beyond-the-org-chart.md)), how to train models that deliberate natively ([Part 3](./training-models-to-deliberate.md)), how to run a hybrid without letting it collapse back into roles ([Part 4](./the-hybrid-failure-mode.md)), and what the patterns look like in code ([Part 5](./a-workspace-in-code.md)).
 

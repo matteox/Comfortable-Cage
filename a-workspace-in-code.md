@@ -49,7 +49,7 @@ Produce the best answer you can, integrating the perspectives above."""
 
 Key properties:
 - One model, one context window. No hand-offs, no information loss.
-- Each perspective can see all previous contributions.
+- Each perspective can see all previous contributions — from the first round on, which is the correlated-error exposure addressed below.
 - Perspectives can revise earlier positions — they're all in the scratchpad.
 - Termination is by round count, which is a weak form of convergence detection.
 
@@ -86,6 +86,18 @@ Tasks with clear perspective diversity: design decisions with multiple stakehold
 Every pattern below hands the model a list of perspectives, and every one of them is persona prompting — reason 5 from Part 1, used the way it actually pays. Conditioning a model to answer as a skeptic produces different output than asking neutrally. That is real and it is cheap.
 
 What makes these patterns workspace patterns rather than role pipelines is not the personas. It is that the personas share one context and one state, and none of them holds anything the others cannot see. The role-shaped version of the same code is a few lines away: give each perspective its own context, pass a summary between them, and the personas are unchanged while the architecture has become the thing this series argues against. That difference — not the vocabulary, not the number of voices — is the whole distinction. It is also, as Part 3 notes, directly testable: fix the personas and vary only the context sharing.
+
+### The wall worth keeping, in code
+
+One design constraint runs through all four patterns, carried from Part 1: every voice here is drawn from the same base model and reads the same board, which makes them the least independent judges available. Convergence can be agreement rather than confirmation. The mitigations are structural, not prompt-level, and each pattern either contains one already or can take one in a few lines.
+
+**A blind first round.** In multi-voice, collect every perspective's opening position against the bare task before any of them reads the scratchpad, then append them all at once — a two-line change to the loop above. Perspective-stitched does this by construction: its Phase 1 is the wall.
+
+**Sync late rather than often.** Fewer, later synchronization points keep the threads independent longer. This is the opposite of the instinct to share everything immediately, and it is the one place in the series where holding something back is the right call.
+
+**A different model in the critic seat.** Adversarial critique's weakness is that the critic shares the generator's blind spots. On the paths that matter, put a model from a different training distribution there. It costs an integration; it buys the only genuinely uncorrelated voice in the system.
+
+None of these is a phase boundary or a hand-off. The voices are not waiting on each other and nothing is being summarized; they are declining to read each other for exactly one round, so that when they do, each has something independent to say. Shared state is this architecture's advantage and its single largest risk, through the same mechanism.
 
 ## Pattern 2 — The blackboard
 
@@ -261,7 +273,7 @@ The patterns aren't interchangeable. Quick guidance:
 
 | Pattern | Best for | Cost | Risk |
 |---|---|---|---|
-| Multi-voice | Tasks with clear perspective diversity (design, strategy, ethics) | Low (one model, one context) | Context overflow on long tasks |
+| Multi-voice | Tasks with clear perspective diversity (design, strategy, ethics) | Low (one model, one context) | Context overflow on long tasks; voices primed alike from round one |
 | Blackboard | Tasks with explicit evidence/proof structure | Medium (JSON schema, validation) | Schema brittleness |
 | Perspective-stitched | Multi-method problems (math, science, optimization) | High (multiple parallel calls) | Integration losses at sync |
 | Adversarial critique | Output quality improvement (writing, reasoning) | Low-medium | Same-model blind spots |
@@ -272,10 +284,10 @@ For most tasks, start with multi-voice. It is the simplest, cheapest, and most r
 
 These patterns compose. A realistic production system might:
 
-1. Use **perspective-stitched** for the initial exploration phase, with three perspectives approaching the problem differently.
+1. Use **perspective-stitched** for the initial exploration phase, with three perspectives approaching the problem differently. It goes first because its independent trajectories are the only point in the pipeline where the voices have not yet read each other.
 2. Pour the results into a **blackboard** to consolidate into a structured hypothesis with explicit evidence on both sides.
 3. Run **multi-voice** over the blackboard to refine the hypothesis, with perspectives challenging each other.
-4. Apply **adversarial critique** to the final synthesis as a sanity check.
+4. Apply **adversarial critique** to the final synthesis as a sanity check, with a different model in the critic seat where the stakes justify it.
 
 ```
 Perspective-Stitched  ──>  Blackboard  ──>  Multi-Voice  ──>  Adversarial Critique
@@ -291,7 +303,7 @@ This is more work than a single linear CoT. It is also qualitatively different. 
 
 ## What this gets you, what it doesn't
 
-These patterns produce better reasoning than a single linear CoT for many tasks. They don't solve the fundamental limits — context window size, same-model critique blindness, JSON brittleness, convergence detection. They are engineering patterns, not breakthroughs.
+These patterns produce better reasoning than a single linear CoT for many tasks. They don't solve the fundamental limits — context window size, correlated error between voices that share a model, JSON brittleness, convergence detection. They are engineering patterns, not breakthroughs.
 
 What they do demonstrate: workspace-style reasoning is implementable today, with current models, in a few hundred lines of code. The barrier is not technical. It is the gravitational pull back toward role-shaped systems that Part 1 described.
 

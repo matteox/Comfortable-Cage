@@ -66,18 +66,30 @@ Four claims that were not in either series before:
 3. **Persona prompting and role architecture are different claims** that get conflated because the first has real evidence. Proposed as a clean ablation in Part 3 and shown as a few lines of difference in Part 5.
 4. **Debuggability is the honest reason**, named as such — role-shaped execution is an expensive solution to a rendering problem, but the need behind it is real, and the series previously had nothing to say to the engineer who holds it.
 
-## Merge note — read before pushing
+## Addendum — the attention-scarcity revision, merged
 
-These files were rebuilt from what is currently published on GitHub. The
-attention-scarcity revision discussed earlier (the "What the org chart was for"
-section, the calendar/context distinction as a standalone section, the MoE
-aside, the concurrency material in Parts 3–5) was never pushed and is not in
-these files. What survives of it here is the origin/persistence preamble at the
-top of *Why the cage is comfortable*, which carries the calendar/context
-distinction in compressed form.
+The attention-scarcity material that the six-causes revision was originally
+built beside is now merged on top of it. The two are compatible by design —
+origin versus persistence — and Part 1 now reads in that order.
 
-If you still want the full attention-scarcity treatment, it has to be re-derived
-and merged with this — the two are compatible by design (origin vs. persistence)
-but they both edit the same region of Part 1, so they cannot be applied blind.
-Say the word and I'll rebuild it against these files rather than against the
-published ones.
+### What it adds
+
+| File | Change |
+|---|---|
+| `shared-cognitive-workspaces.md` | New section *What the org chart was for* ahead of *Why the cage is comfortable*: the SDLC table re-read as a table of attention limits, the calendar/context distinction as a standalone claim, the sub-agent status report as the specimen, an aside on mixture-of-experts, and *The wall worth keeping* — the rule that shared state is not "everyone sees everything" but "keep the walls that buy independent error." Correlated error added to *What's unsolved*. |
+| `training-models-to-deliberate.md` | New experiment: measure the correlation between voices (one model versus three, everything else fixed). |
+| `the-hybrid-failure-mode.md` | Scheduling as a drift signal (now 7 signals, in three groups), a discipline for auditing the schedule, and a *Scheduling the workspace* anti-pattern. |
+| `a-workspace-in-code.md` | The correlated-error constraint stated for the patterns. |
+
+### Consistency edits made in the merge
+
+The merge introduced cross-references the rest of the series did not yet
+honour. These were fixed so the argument sorts the same way in every post:
+
+- **Part 1** now carries the wall-worth-keeping exception into the definition of shared mutable state, into the multi-voice pattern (highest exposure to correlated error) and into perspective-stitched (the pattern that keeps the wall by construction). The forward reference to Parts 3–5 now says precisely where the idea lands in each.
+- **Part 2** was inconsistent with Part 3 on how much native deliberation reaches: Part 2 said four of the six causes lose their grip, Part 3 said at most two. Part 2 now agrees with Part 3 (the person-metaphor and the shipped primitive). Path 5's partition is distinguished from the independent-first-position kind, and the practitioner, evaluator, and researcher guidance each gain the correlated-error point.
+- **Part 3** names correlated error in the evaluation problem (Part 1 promised it there), ties the MoE side-effect back to Part 1's aside, and identifies same-model bias in constitutional critique as the objection at its most concentrated.
+- **Part 4** had a discipline numbered 5b under a heading that said six. It is now seven disciplines, numbered 1–7. Correlated error, which Part 1 said recurs here as a drift signal, is now the second reading of signal 1 (clean traces), an extension of discipline 2, a *Syncing early* anti-pattern distinguished from the scheduling anti-pattern, and two lines under *What success looks like*.
+- **Part 5** moves the constraint out of the persona note into its own subsection, *The wall worth keeping, in code*, and maps the three mitigations onto the patterns: a blind first round for multi-voice, perspective-stitched's Phase 1 as the wall by construction, late syncs, and a different model in the critic seat. The pattern table, the composition rationale, and the closing limits now name correlated error rather than only "same-model blind spots."
+- **README** thesis gains the wall rule; Part 1 and Part 4 rows updated (seven signals, seven disciplines). **START-HERE** deep-links to the new section.
+- **Prometheus** — *Leaving the Cage* no longer says "nothing is private": Layer 2 carries the exception, Layer 3 rules out unjustified phase boundaries, the cross-model critic is identified as the only uncorrelated voice, and correlated error joins *What's not solved*. *The Rituals* names calendar rationing as what sits under all four rituals. *What "AI-First" Actually Means* separates the origin from the six in its cross-series paragraph.

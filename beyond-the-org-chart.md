@@ -19,7 +19,7 @@ Part 1 named six reasons the org chart survives its own origin. The useful way t
 | Conway's law | Path 7 |
 | The shipped primitive | Path 7 |
 
-Two entries don't appear in that table. Path 1 treats none of the six; it accepts the shape and optimizes inside it, which is a legitimate choice and worth naming as one. Path 3 goes underneath all of them: if deliberation is native to the model, the prompt-time architecture stops being load-bearing, and four of the six lose their grip on it at once. That is why it is the highest-leverage path and the one practitioners can do least about.
+Two entries don't appear in that table. Path 1 treats none of the six; it accepts the shape and optimizes inside it, which is a legitimate choice and worth naming as one. Path 3 goes underneath the architecture rather than any one cause: if deliberation is native to the model, the prompt-time scaffolding stops being load-bearing. That loosens the person-metaphor and the shipped primitive — two of the six, as [Part 3](./training-models-to-deliberate.md) is careful to bound it — and leaves the other four exactly where they were. It is still the highest-leverage path for capability, and the one practitioners can do least about.
 
 ## Path 1 — Optimize the SDLC
 
@@ -53,7 +53,7 @@ Regulation moves on decadal timescales and insurance markets on multi-year ones;
 
 Replace the org-chart vocabulary with a toolkit — *skeptic*, *generator*, *integrator*, *adversary*, *synthesizer*, *domain expert* — composed per task rather than fixed up front. Some agent frameworks are gesturing at this without naming it. More flexible than SDLC roles, no commitment to an organizational shape.
 
-The core limitation: it's still partition. The primitives are still specialized. A better Path 1, not a path to shared reasoning. Useful, not transformative.
+The core limitation: it's still partition, and partition by ownership rather than the one kind Part 1 says is worth keeping — the primitives hold separate context throughout, not just long enough to form an independent first position. The primitives are still specialized. A better Path 1, not a path to shared reasoning. Useful, not transformative.
 
 ## Path 6 — Verifiable reasoning traces
 
@@ -77,11 +77,11 @@ The limitation is that this path only prevents. It does nothing for a system alr
 
 ## What this means for whom
 
-**Building systems today:** prefer shared context over hand-offs. Use role labels for observability, not architecture. Ask of every role in the system which of the six reasons it serves — a role that can't name one is Conway's law or the framework primitive showing through, and can be deleted without a meeting. The reflex to add a role every time something fails is the gravitational pull from Part 1; notice it. Evaluate on revision and convergence quality, not role completion.
+**Building systems today:** prefer shared context over hand-offs. Keep the one wall Part 1 says buys something — let each voice form a first position before it reads the others — and treat every other boundary as scheduling until it can name what it buys. Use role labels for observability, not architecture. Ask of every role in the system which of the six reasons it serves — a role that can't name one is Conway's law or the framework primitive showing through, and can be deleted without a meeting. The reflex to add a role every time something fails is the gravitational pull from Part 1; notice it. Evaluate on revision and convergence quality, not role completion.
 
-**Evaluating systems:** reward revision of earlier decisions in light of later evidence. Measure information preserved across hand-off boundaries, not just outputs. Treat a single-framing monologue as a warning sign, not a sign of confidence.
+**Evaluating systems:** reward revision of earlier decisions in light of later evidence. Measure information preserved across hand-off boundaries, not just outputs. Treat a single-framing monologue as a warning sign, not a sign of confidence — and treat fast, unanimous convergence the same way, because voices from one model, primed the same way, agree for reasons that have nothing to do with being right.
 
-**Researching:** the interesting question is how to train for deliberation, not for outputs. Multi-agent debate works in narrow settings; find where it breaks. The blackboard revival is already underway and benchmarked (see Part 1); the open problems are the ones it exposes — how shared state gets updated, authorized, and audited over long horizons, how to detect convergence, and how to make an interleaved trace legible to an auditor.
+**Researching:** the interesting question is how to train for deliberation, not for outputs. Multi-agent debate works in narrow settings; find where it breaks. The blackboard revival is already underway and benchmarked (see Part 1); the open problems are the ones it exposes — how shared state gets updated, authorized, and audited over long horizons, how to detect convergence, how much independence a given amount of shared context costs, and how to make an interleaved trace legible to an auditor.
 
 **Influencing institutions:** every regulation requiring "a human in the loop" or "a documented review step" is implicitly requiring SDLC-shaped AI. Push for liability that attaches to outcomes.
 

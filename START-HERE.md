@@ -2,7 +2,7 @@
 
 Most AI agent systems are built like a small company: a planner hands off to a coder, who hands off to a reviewer. That shape was never discovered. It was inherited — and it is costing more than anyone is measuring.
 
-The org chart is [a compression scheme for scarce attention](https://github.com/matteox/Comfortable-Cage/blob/main/shared-cognitive-workspaces.md). A person can be in one place at a time, interruption is expensive, and asking a busy colleague a question is never free. Roles, hand-offs, summaries, review gates, standups, sprint boundaries, seniority — every one answers the same question: *who has to know what, given that knowing costs someone an hour?*
+The org chart is [a compression scheme for scarce attention](https://github.com/matteox/Comfortable-Cage/blob/main/shared-cognitive-workspaces.md#what-the-org-chart-was-for). A person can be in one place at a time, interruption is expensive, and asking a busy colleague a question is never free. Roles, hand-offs, summaries, review gates, standups, sprint boundaries, seniority — every one answers the same question: *who has to know what, given that knowing costs someone an hour?*
 
 For a model, that hour costs nothing. Interruption is free. Simultaneity is free. Repetition is free. Something is still scarce — context, not calendar — but that scarcity wants a different architecture: relevance selected per question, not ownership partitioned in advance.
 
