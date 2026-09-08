@@ -9,11 +9,9 @@
 
 It's a great line. The kind of thing you'd expect from a man who bet his company on an idea nobody asked for and turned out to be right.
 
-No record he ever said it exists. Not in his own writing, not in any interview, not in the Ford Museum's collection of two hundred-plus verified quotes. It started in 1999 as one man's guess about what Ford's customers might have said. By 2006, Ford's own great-grandson was repeating it as something his great-grandfather actually said.
+No record he ever said it exists. Not in his own writing, not in any interview, not in the Ford Museum's collection of two hundred-plus verified quotes.
 
 Sounds good, though.
-
-Hold on to that feeling — the one where something sounds right and you'd rather not check. Then look at how AI agent systems are built.
 
 ## The thesis
 
