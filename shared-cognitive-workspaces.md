@@ -15,7 +15,7 @@ Sounds good, though.
 
 ## The thesis
 
-Most of them are built like a small company. A "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way, and reproducing the structure anyway may be quietly capping what these systems can do.
+Most AI agent systems are built like a small company. A "planner" writes a spec, a "coder" implements it, a "reviewer" checks the work, and each hands its output to the next. It feels natural because it's how people organize projects. But AI doesn't have the reasons humans organize work that way, and reproducing the structure anyway may be quietly capping what these systems can do.
 
 The alternative this series argues for is not "more specialized agents" and not "one giant agent." It's something closer to a persistent shared cognitive workspace with truly interleaved reasoning — nearer to chain-of-thought with multiple voices than to a software org. Instead of separate roles passing finished work to each other, one continuously shared understanding that every perspective reads from and writes to at once.
 
